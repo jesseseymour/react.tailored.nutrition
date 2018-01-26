@@ -8,11 +8,17 @@ module.exports = {
 		filename: "bundle.js",
 		publicPath: "/assets/"
 	},
+	devtool: 'source-map',
 	devServer: {
 		inline: true,
 		contentBase: './dist',
-		port: 3000
+		port: 3000,
+		hot: true
 	},
+	plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NamedModulesPlugin()
+  ],
 	module: {
 		loaders: [
 			{
