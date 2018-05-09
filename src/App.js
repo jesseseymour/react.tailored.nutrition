@@ -1,9 +1,10 @@
 import { Component } from 'react'
+import Switch from './components/containers/Switch'
 
 class App extends Component {
   render() {
     return(
-      <div>This is my app</div>
+      <Switch />
     )
   }
 }

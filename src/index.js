@@ -1,13 +1,25 @@
 import React from 'react'
 import { render } from 'react-dom'
-import App from './App'
+import storeFactory from './store/configureStore'
+import { Provider } from 'react-redux'
 
 window.React = React
+
+const initialState = (localStorage['redux-store']) ? JSON.parse(localStorage['redux-store']) : {'defaultActions':false}
+
+const saveState = () => localStorage['redux-store'] = JSON.stringify(store.getState())
+
+const store = storeFactory()
+store.subscribe(saveState)
+
+window.store = store
 
 let _render = () => {
   const App = require('./App').default
   render(
-    <App />,
+    <Provider store={store}>
+      <App />
+    </Provider>,
     document.getElementById('react-container')
   )
 }
