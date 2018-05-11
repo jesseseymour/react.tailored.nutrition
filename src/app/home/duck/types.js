@@ -1,5 +1,7 @@
 const TOGGLE_BOOL = 'TOGGLE_BOOL'
+const UPDATE_PET = 'UPDATE_PET'
 
 export default {
-  TOGGLE_BOOL
+  TOGGLE_BOOL,
+  UPDATE_PET
 }

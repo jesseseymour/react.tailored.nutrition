@@ -5,4 +5,9 @@ const toggleMyBool = (value) => ({
   value: value
 })
 
-export default { toggleMyBool }
+const updatePetDetails = payload => ({
+  type: types.UPDATE_PET,
+  payload: payload
+})
+
+export default { toggleMyBool, updatePetDetails }

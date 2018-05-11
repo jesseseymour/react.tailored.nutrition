@@ -3,8 +3,9 @@ import HomeComponent from './HomeComponent'
 import { homeOperations } from './duck'
 
 const mapStateToProps = state => {
-  const { myBool } = state.home
-  return { myBool }
+  const { myBool, petDetails } = state.home.home
+  return { myBool, petDetails }
+  //return state.home
 }
 
 const mapDispatchToProps = dispatch => {
@@ -12,6 +13,11 @@ const mapDispatchToProps = dispatch => {
     toggleMyBool(bool) {
       dispatch(
         homeOperations.toggleMyBool()
+      )
+    },
+    updatePetDetails(payload) {
+      dispatch(
+        homeOperations.updatePetDetails(payload)
       )
     }
    }

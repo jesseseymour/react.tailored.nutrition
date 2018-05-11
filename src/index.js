@@ -8,7 +8,13 @@ import consoleMessages from './consoleMessages'
 
 
 const middleware = applyMiddleware(thunk, consoleMessages)
+
+
+const saveState = () => localStorage['redux-store'] = JSON.stringify(store.getState())
+
 const store = createStore(rootReducer, middleware)
+store.subscribe(saveState)
+
 window.store = store
 
 
