@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import HomeComponent from './HomeComponent'
 import { homeOperations } from './duck'
 import { appOperations } from '../duck'
+import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = state => {
   const { myBool, petDetails } = state.app
@@ -28,4 +29,4 @@ const HomeContainer = connect(
   mapDispatchToProps
 )(HomeComponent)
 
-export default HomeContainer
+export default withRouter(HomeContainer)
