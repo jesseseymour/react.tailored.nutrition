@@ -3,7 +3,7 @@ import HomeComponent from './HomeComponent'
 import { homeOperations } from './duck'
 
 const mapStateToProps = state => {
-  const { myBool, petDetails } = state.home.home
+  const { myBool, petDetails } = state.home
   return { myBool, petDetails }
   //return state.home
 }

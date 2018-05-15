@@ -1,7 +1,12 @@
 import types from './types'
 
+if(localStorage["redux-store"]){
+  let json = JSON.parse(localStorage["redux-store"])
+  console.log(json)
+}
+
 const INITIAL_STATE = (localStorage["redux-store"]) ?
-  JSON.parse(localStorage["redux-store"]) : 
+  JSON.parse(localStorage["redux-store"]).home : 
   {
     myBool: false,
     petDetails: {
@@ -21,7 +26,7 @@ const homeReducer = (state=INITIAL_STATE, action) => {
     }
     case types.UPDATE_PET: {
       const newState = state
-      state.home.petDetails.name !== action.payload ? newState.petDetails.name = action.payload : null
+      state.petDetails.name !== action.payload ? newState.petDetails.name = action.payload : null
       return newState === state ? state : newState
     }
     default:
