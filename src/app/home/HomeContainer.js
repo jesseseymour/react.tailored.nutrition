@@ -1,23 +1,23 @@
 import { connect } from 'react-redux'
 import HomeComponent from './HomeComponent'
 import { homeOperations } from './duck'
+import { appOperations } from '../duck'
 
 const mapStateToProps = state => {
-  const { myBool, petDetails } = state.home
+  const { myBool, petDetails } = state.app
   return { myBool, petDetails }
-  //return state.home
 }
 
 const mapDispatchToProps = dispatch => {
   return { 
     toggleMyBool(bool) {
       dispatch(
-        homeOperations.toggleMyBool()
+        appOperations.toggleMyBool()
       )
     },
     updatePetDetails(payload) {
       dispatch(
-        homeOperations.updatePetDetails(payload)
+        appOperations.updatePetDetails(payload)
       )
     }
    }

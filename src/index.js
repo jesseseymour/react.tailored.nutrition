@@ -2,20 +2,24 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './reducers'
-import consoleMessages from './consoleMessages'
 
 
-const middleware = applyMiddleware(thunk, consoleMessages)
+const middleware = applyMiddleware(thunk)
 
 
 const saveState = () => localStorage['redux-store'] = JSON.stringify(store.getState())
 
-const store = createStore(rootReducer, middleware)
+const store = createStore(
+  rootReducer, 
+  compose(
+    middleware, 
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+)
 store.subscribe(saveState)
 
-window.store = store
 
 
 let _render = () => {

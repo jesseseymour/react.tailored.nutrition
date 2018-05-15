@@ -17,13 +17,13 @@ class HomeComponent extends Component {
   }
 
   handleSubmit = () => {
-    this.props.updatePetDetails(this.state.name)
+    this.props.updatePetDetails({name: this.state.name, type: ""})
   }
 
   render(){
     return (
       <div>
-        <button onClick={() => this.props.toggleMyBool()}>This is my button</button>
+        <button onClick={() => this.props.toggleMyBool()}>{`Toggle ${this.props.myBool}`}</button><br/>
         <input type="text" name="name" value={this.state.name} onChange={(e) => this.handleChange(e)} />
         <input type="submit" value="Update" onClick={this.handleSubmit} />
       </div>
