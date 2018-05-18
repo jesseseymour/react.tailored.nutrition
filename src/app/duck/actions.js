@@ -10,4 +10,9 @@ const updatePetDetails = payload => ({
   payload: payload
 })
 
+const setStep = payload => ({
+  type: types.SET_STEP,
+  payload: payload
+})
+
 export default { toggleMyBool, updatePetDetails }

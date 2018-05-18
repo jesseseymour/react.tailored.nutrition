@@ -1,7 +1,7 @@
 import types from './types'
 
-const INITIAL_STATE = (localStorage["redux-store"]) ?
-  JSON.parse(localStorage["redux-store"]).app : 
+const INITIAL_STATE = (localStorage["redux-store"].app) ?
+  JSON.parse(localStorage["redux-store"].app) : 
   {
     myBool: false,
     petDetails: {
@@ -31,6 +31,12 @@ const appReducer = (state=INITIAL_STATE, action) => {
         } 
       }else{
         return state
+      }
+    }
+    case types.SET_STEP: {
+      return {
+        ...state,
+        step: action.payload
       }
     }
     default:

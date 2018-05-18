@@ -1,7 +1,9 @@
 const TOGGLE_BOOL = 'TOGGLE_BOOL'
 const UPDATE_PET = 'UPDATE_PET'
+const SET_STEP = 'SET_STEP'
 
 export default {
   TOGGLE_BOOL,
-  UPDATE_PET
+  UPDATE_PET,
+  SET_STEP
 }
