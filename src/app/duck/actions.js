@@ -15,4 +15,17 @@ const setStep = payload => ({
   payload: payload
 })
 
-export default { toggleMyBool, updatePetDetails }
+const nextStep = () => ({
+  type: types.NEXT_STEP
+})
+
+const prevStep = () => ({
+  type: types.PREV_STEP
+})
+
+const updateSelection = (step,selection) => ({
+  type: types.UPDATE_SELECTION,
+  payload: {step,selection}
+})
+
+export default { toggleMyBool, updatePetDetails, nextStep, setStep, prevStep, updateSelection }

@@ -1,7 +1,6 @@
 import types from './types'
 
-const INITIAL_STATE = (localStorage["redux-store"].home) ?
-  JSON.parse(localStorage["redux-store"]).home : 
+const INITIAL_STATE = 
   {
     homeBool: false,
     homeObject: {

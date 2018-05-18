@@ -1,7 +1,7 @@
 import types from './types'
 
-const INITIAL_STATE = (localStorage["redux-store"].app) ?
-  JSON.parse(localStorage["redux-store"].app) : 
+
+const INITIAL_STATE_OBJECT = 
   {
     myBool: false,
     petDetails: {
@@ -9,9 +9,16 @@ const INITIAL_STATE = (localStorage["redux-store"].app) ?
       name: ""
     },
     selections: {},
-    step: 0,
+    step: 1,
     suggestedProduct: ""
   }
+
+const INITIAL_STATE = (!localStorage["redux-store"]) 
+  ? INITIAL_STATE_OBJECT
+  : ("app" in JSON.parse(localStorage["redux-store"])) 
+  ? JSON.parse(localStorage["redux-store"]).app
+  : INITIAL_STATE_OBJECT
+  
 
 
 const appReducer = (state=INITIAL_STATE, action) => {
@@ -37,6 +44,28 @@ const appReducer = (state=INITIAL_STATE, action) => {
       return {
         ...state,
         step: action.payload
+      }
+    }
+    case types.NEXT_STEP: {
+      return {
+        ...state,
+        step: state.step + 1
+      }
+    }
+    case types.PREV_STEP: {
+      return (
+        state.step > 0 ?
+          {
+            ...state,
+            step: state.step - 1
+          }
+        : state
+      )
+    }
+    case types.UPDATE_SELECTION: {
+      return {
+        ...state,
+        selections: {...state.selections, [action.payload.step]: action.payload.selection}
       }
     }
     default:

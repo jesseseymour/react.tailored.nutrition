@@ -25,8 +25,23 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         appOperations.setStep(step)
       )
+    },
+    nextStep() {
+      dispatch(
+        appOperations.nextStep()
+      )
+    },
+    prevStep() {
+      dispatch(
+        appOperations.prevStep()
+      )
+    },
+    updateSelection(step,selection) {
+      dispatch(
+        appOperations.updateSelection(step,selection)
+      )
     }
-   }
+  }
 }
 
 const HomeContainer = connect(
