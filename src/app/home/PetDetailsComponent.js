@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-class Step1 extends Component {
+class PetDetails extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -14,12 +14,12 @@ class Step1 extends Component {
 
   render() {
     return (
-      <form onSubmit={() => this.props.handleSubmit(this.state.name)}>
+      <div>
         <input type="text" name="name" required value={this.state.name} onChange={(e) => this.handleChange(e)} />
-        <input type="submit" value="Continue" />
-      </form>
+        <button onClick={() => this.props.handleSubmit(this.state.name)}>Update Pet Name</button>
+      </div>
     )
   }
 }
 
-export default Step1
+export default PetDetails
