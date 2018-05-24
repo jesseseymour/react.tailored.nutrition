@@ -1,0 +1,38 @@
+[
+  {
+    "question": "how old is your dog?",
+    "options": [
+      "0-1 years", 
+      "2-4 years", 
+      "5-7 years", 
+      "8+ years"
+    ]
+  },
+  {
+    "question": "what best describes your dog?",
+    "options": [
+      "asshole",
+      "shithead",
+      "dickhole",
+      "pain in the butt"
+    ]
+  },
+  {
+    "question": "how much does your dog weigh?",
+    "options": [
+      "0-5lbs",
+      "6-10lbs",
+      "10-20lbs",
+      "20+lbs"
+    ]
+  },
+  {
+    "question": "why did you get a dog?",
+    "options": [
+      "chicks, man",
+      "for a future meal",
+      "to fetch the mail",
+      "i don't have a dog"
+    ]
+  }
+]

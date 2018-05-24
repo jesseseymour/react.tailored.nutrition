@@ -1,0 +1,36 @@
+[
+  {
+    "copy": "Bulldogs need lorem issue, set dolor lore ipsum velit esse cillum dolore eu fugiat nulla.<br/><br/>And IAMS has the solution lore ipsum set dolore eu esse cillum",
+    "image": "/path/to/dog/image.jpg",
+    "product": {
+      "title": "proactive health bullshit",
+      "image": "/path/to/product/image.png",
+      "description": "lorem ipsum",
+      "bvID": "1234567890",
+      "psID": "1234567890",
+      "link": "http://example.com/link/to/product"
+    },
+    "ymal": [
+      {
+        "image": "/path/to/product/image.png",
+        "title": "proactive health nonsense",
+        "link": "http://example.com/link/to/product"
+      },
+      {
+        "image": "/path/to/product/image.png",
+        "title": "proactive health nonsense",
+        "link": "http://example.com/link/to/product"
+      },
+      {
+        "image": "/path/to/product/image.png",
+        "title": "proactive health nonsense",
+        "link": "http://example.com/link/to/product"
+      },
+      {
+        "image": "/path/to/product/image.png",
+        "title": "proactive health nonsense",
+        "link": "http://example.com/link/to/product"
+      }
+    ]
+  }
+]
