@@ -30,11 +30,13 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         appOperations.nextStep()
       )
+      return Promise.resolve()
     },
     prevStep() {
       dispatch(
         appOperations.prevStep()
       )
+      return Promise.resolve()
     },
     updateSelection(step,selection) {
       dispatch(
