@@ -54,7 +54,7 @@ const appReducer = (state=INITIAL_STATE, action) => {
     }
     case types.PREV_STEP: {
       return (
-        state.step > 0 ?
+        state.step > 1 ?
           {
             ...state,
             step: state.step - 1
@@ -65,8 +65,11 @@ const appReducer = (state=INITIAL_STATE, action) => {
     case types.UPDATE_SELECTION: {
       return {
         ...state,
-        selections: {...state.selections, [action.payload.step]: action.payload.selection}
+        selections: {...state.selections, [parseInt(action.payload.step)]: action.payload.selection}
       }
+    }
+    case types.RESET: {
+      return INITIAL_STATE_OBJECT
     }
     default:
       return state

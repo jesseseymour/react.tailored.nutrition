@@ -4,6 +4,7 @@ const SET_STEP = 'SET_STEP'
 const NEXT_STEP = 'NEXT_STEP'
 const PREV_STEP = 'PREV_STEP'
 const UPDATE_SELECTION = 'UPDATE_SELECTION'
+const RESET = 'RESET'
 
 export default {
   TOGGLE_BOOL,
@@ -11,5 +12,6 @@ export default {
   SET_STEP,
   NEXT_STEP, 
   PREV_STEP,
-  UPDATE_SELECTION
+  UPDATE_SELECTION,
+  RESET
 }

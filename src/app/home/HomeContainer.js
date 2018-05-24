@@ -5,8 +5,8 @@ import { appOperations } from '../duck'
 import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = state => {
-  const { myBool, petDetails, step } = state.app
-  return { myBool, petDetails, step }
+  const { myBool, petDetails, step, selections } = state.app
+  return { myBool, petDetails, step, selections }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -25,6 +25,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         appOperations.setStep(step)
       )
+      return Promise.resolve()
     },
     nextStep() {
       dispatch(
@@ -42,6 +43,12 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         appOperations.updateSelection(step,selection)
       )
+    },
+    reset(){
+      dispatch(
+        appOperations.reset()
+      )
+      return Promise.resolve()
     }
   }
 }

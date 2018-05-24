@@ -28,4 +28,8 @@ const updateSelection = (step,selection) => ({
   payload: {step,selection}
 })
 
-export default { toggleMyBool, updatePetDetails, nextStep, setStep, prevStep, updateSelection }
+const reset = () => ({
+  type: types.RESET
+})
+
+export default { toggleMyBool, updatePetDetails, nextStep, setStep, prevStep, updateSelection, reset }
