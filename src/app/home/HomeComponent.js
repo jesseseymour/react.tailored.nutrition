@@ -8,7 +8,9 @@ import Status from './StatusComponent'
 class HomeComponent extends Component {
   constructor(props) {
     super(props)
-    this.state = {questions:null}
+    this.state = {
+      questions:null
+    }
   }
 
   componentDidMount = () => {
@@ -35,12 +37,8 @@ class HomeComponent extends Component {
     this.props.history.push(`/step/${stepNum}`)
   }
 
-  handleChange = (e) => {
-    this.setState({ name: e.target.value })
-  }
-
   updatePetDetails = (name, type="") => {
-    this.props.updatePetDetails({ name: name, type: "" })
+    this.props.updatePetDetails({ name, type })
   }
 
   updateAnswer = selection => {
@@ -72,13 +70,15 @@ class HomeComponent extends Component {
                   handleSubmit={this.updateAnswer} />
             } />
         </Switch>
-        
-
         <StepSelector 
           step={this.props.step}
           nextStep={() => this.props.nextStep().then(() => this.props.history.push(`/step/${this.props.step}`))}
           prevStep={() => this.props.prevStep().then(() => this.props.history.push(`/step/${this.props.step}`))} />
-        <Status props={this.props}/>
+        <Status 
+          petName={this.props.petDetails.name} 
+          selections={this.props.selections}
+          handleUpdatePet={name => this.updatePetDetails(name)}
+          />
         <p onClick={() => this.props.reset().then(() => this.props.history.push('/step/1'))}>start over</p>
       </div>
     )
