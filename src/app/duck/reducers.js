@@ -65,7 +65,7 @@ const appReducer = (state=INITIAL_STATE, action) => {
     case types.UPDATE_SELECTION: {
       return {
         ...state,
-        selections: {...state.selections, [parseInt(action.payload.step)]: action.payload.selection}
+        selections: {...state.selections, [parseInt(action.payload.questionIndex)]: action.payload.optionIndex}
       }
     }
     case types.RESET: {

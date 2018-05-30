@@ -8,6 +8,12 @@ class Question extends Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState){
+    return nextProps.step !== parseInt(nextProps.match.params.id) ? {selection: null} : null
+  }
+
+ 
+
   setSelection(index){
     this.setState({selection:index})
   }
@@ -23,12 +29,12 @@ class Question extends Component {
             <div>
               {this.props.questions[questionIndex].question}
               {this.props.questions[questionIndex].options.map((option, index) =>
-                <button key={index} onClick={() => this.setSelection(option)} disabled={this.state.selection === 1}>{option}</button>
+                <button key={index} onClick={() => this.setSelection(index)} disabled={this.state.selection === index}>{option}</button>
               )}
             </div>
           ) : null
         }
-        <button disabled={!this.state.selection} onClick={() => this.props.handleSubmit(this.state.selection)}>Update Answer</button>
+        <button onClick={() => this.props.handleSubmit(questionIndex, this.state.selection)}>Update Answer</button>
       </div>
     )
   }

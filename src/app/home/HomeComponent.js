@@ -19,7 +19,7 @@ class HomeComponent extends Component {
       .then(results => results.json())
       .then(questions => this.setState({questions}))
 
-
+    //#region
     /*const pathArr = this.props.location.pathname.split('/')
     let stepNum
 
@@ -31,6 +31,7 @@ class HomeComponent extends Component {
     } else {
       //this.props.history.push(`/step/1`)
     } */
+    //#endregion
   }
 
   redirectToStep = stepNum => {
@@ -41,8 +42,8 @@ class HomeComponent extends Component {
     this.props.updatePetDetails({ name, type })
   }
 
-  updateAnswer = selection => {
-    this.props.updateSelection(this.props.step, selection)
+  updateAnswer = (questionIndex, optionIndex) => {
+    this.props.updateSelection(questionIndex, optionIndex)
   }
 
   render() {
@@ -66,6 +67,7 @@ class HomeComponent extends Component {
                 <Question
                   {...props}
                   step={this.props.step}
+                  selection={null}
                   questions={this.state.questions ? this.state.questions : null}
                   handleSubmit={this.updateAnswer} />
             } />
@@ -77,7 +79,9 @@ class HomeComponent extends Component {
         <Status 
           petName={this.props.petDetails.name} 
           selections={this.props.selections}
+          questions={this.state.questions}
           handleUpdatePet={name => this.updatePetDetails(name)}
+          handleSelectionUpdate={(questionIndex, optionIndex) => this.updateAnswer(questionIndex, optionIndex)}
           />
         <p onClick={() => this.props.reset().then(() => this.props.history.push('/step/1'))}>start over</p>
       </div>
