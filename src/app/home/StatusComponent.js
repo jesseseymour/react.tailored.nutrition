@@ -12,10 +12,25 @@ class Status extends Component {
     this.state.editPetName ? document.getElementById('PetNameInput').focus() : null
   }
 
+  getAnsweredQuestions = (questions, selections) => {
+    let arr = []
+    Object.entries(selections).map((selection, index) => {
+      const question = questions.find(question => question.id === parseInt(selection[0]))
+      const answer = question.options.find(option => option.id === selection[1])
+      arr.push({question: question.question, answer: answer.option})
+    })
+    console.log(arr)
+  }
 
   
   render() {
-    const { selections, petName, handleUpdatePet, handleSelectionUpdate, questions } = this.props 
+    const { selections, petName, handleUpdatePet, handleSelectionUpdate, questions, step } = this.props 
+
+    const answeredQuestions = questions ? this.getAnsweredQuestions(questions, selections) : null
+
+    // const answeredQuestions = questions ? Object.entries(selections).map((selection, index) => {
+    //   questions.find(question => question.id === parseInt(selection[0]))
+    // }) : null
 
     return (
       <dl>
@@ -36,18 +51,19 @@ class Status extends Component {
             style={!this.state.editPetName ? { display: 'inline' } : { display: 'none' }}
             onClick={() => this.setState({editPetName:true})}>{petName}</span>
         </dd>
-        {questions ? (
-          Object.entries(selections).map((selection,questionIndex) =>
-            <dd key={questionIndex}>
-              <div>{`${questions[questionIndex].question}: `} <span>{`${questions[questionIndex].options[selection[1]]}`}</span></div>
+        {answeredQuestions}
+        {/* {questions ? (
+          Object.entries(selections).map((selection, index) =>
+            <dd key={index}>
+              <div>{`${questions[selection[0]].question}: `} <span>{`${questions[selection[0]].options[selection[1].option]}`}</span></div>
               <ul className='questions' style={{color:'red'}}>
-                {questions[questionIndex].options.map(
+                {questions[selection[0]].options.map(
                   (option, optionIndex) => 
-                    <li key={optionIndex} onClick={() => handleSelectionUpdate(questionIndex, optionIndex)}>{option}</li>
+                    <li key={optionIndex} onClick={() => handleSelectionUpdate(questions[selection[0]].id, option.id)}>{option.option}</li>
                 )}
               </ul>
             </dd>)
-        ) : null}
+        ) : null} */}
       </dl>
     )
   }

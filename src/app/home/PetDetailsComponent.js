@@ -14,7 +14,7 @@ class PetDetails extends Component {
 
   render() {
     return (
-      <div>
+      <div style={this.props.styles}>
         <input type="text" name="name" required value={this.state.name} onChange={(e) => this.handleChange(e)} />
         <button onClick={() => this.props.handleSubmit(this.state.name)}>Update Pet Name</button>
       </div>

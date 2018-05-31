@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { Route, Switch, Link } from 'react-router-dom'
 import StepSelector from './StepSelectorComponent'
 import PetDetails from './PetDetailsComponent'
 import Question from './QuestionComponent'
@@ -34,6 +35,12 @@ class HomeComponent extends Component {
     //#endregion
   }
 
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    const pathnameArr = this.props.location.pathname.split('/')
+    const stepFromUrl = parseInt(pathnameArr[pathnameArr.indexOf('step') + 1])
+    stepFromUrl !== this.props.step ? this.props.setStep(stepFromUrl) : null
+  }
+
   redirectToStep = stepNum => {
     this.props.history.push(`/step/${stepNum}`)
   }
@@ -42,46 +49,72 @@ class HomeComponent extends Component {
     this.props.updatePetDetails({ name, type })
   }
 
-  updateAnswer = (questionIndex, optionIndex) => {
-    this.props.updateSelection(questionIndex, optionIndex)
+  updateAnswer = (questionId, optionId) => {
+    this.props.updateSelection(questionId, optionId)
   }
-
+  
   render() {
+    const styles = {};
+
+    styles.content = {
+      position: "absolute",
+      background: "white",
+      left: 0,
+      right: 0,
+      top: "0",
+      bottom: 0
+    };
+
+    styles.container ={
+      position: "relative",
+      height: "300px"
+    }
     return (
       <div>
-        <Switch>
-          <Route
-            path="/step/1"
-            render={
-              props =>
-                <PetDetails
-                  {...props}
-                  step={this.props.step}
-                  petDetails={this.props.petDetails}
-                  handleSubmit={this.updatePetDetails} />
-            } />
-          <Route
-            path="/step/:id"
-            render={
-              props =>
-                <Question
-                  {...props}
-                  step={this.props.step}
-                  selection={null}
-                  questions={this.state.questions ? this.state.questions : null}
-                  handleSubmit={this.updateAnswer} />
-            } />
-        </Switch>
+        <div style={styles.container}>
+          <TransitionGroup>
+            <CSSTransition key={this.props.location.key} classNames='fade' timeout={300}>
+              <Switch location={this.props.location}>
+                <Route
+                  exact
+                  path="/step/1"
+                  render={
+                    props =>
+                      <PetDetails
+                        {...props}
+                        step={this.props.step}
+                        petDetails={this.props.petDetails}
+                        handleSubmit={this.updatePetDetails} 
+                        styles={styles.content} />
+                  } />
+                <Route
+                  exact
+                  path="/step/:id"
+                  render={
+                    props =>
+                      <Question
+                        {...props}
+                        step={this.props.step}
+                        selection={null}
+                        questions={this.state.questions ? this.state.questions : null}
+                        handleSubmit={this.updateAnswer} 
+                        styles={styles.content} />
+                  } />
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
+        </div>
         <StepSelector 
           step={this.props.step}
-          nextStep={() => this.props.nextStep().then(() => this.props.history.push(`/step/${this.props.step}`))}
-          prevStep={() => this.props.prevStep().then(() => this.props.history.push(`/step/${this.props.step}`))} />
+          nextStep={() => this.props.history.push(`/step/${this.props.step + 1}`)}
+          prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} />
         <Status 
           petName={this.props.petDetails.name} 
           selections={this.props.selections}
           questions={this.state.questions}
           handleUpdatePet={name => this.updatePetDetails(name)}
           handleSelectionUpdate={(questionIndex, optionIndex) => this.updateAnswer(questionIndex, optionIndex)}
+          step={this.props.step}
           />
         <p onClick={() => this.props.reset().then(() => this.props.history.push('/step/1'))}>start over</p>
       </div>

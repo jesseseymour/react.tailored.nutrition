@@ -23,9 +23,9 @@ const prevStep = () => ({
   type: types.PREV_STEP
 })
 
-const updateSelection = (questionIndex,optionIndex) => ({
+const updateSelection = (questionId,optionId) => ({
   type: types.UPDATE_SELECTION,
-  payload: {questionIndex,optionIndex}
+  payload: {questionId,optionId}
 })
 
 const reset = () => ({
