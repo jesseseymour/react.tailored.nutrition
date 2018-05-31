@@ -1,38 +1,107 @@
 [
   {
+    "id": 1,
+    "step": 2,
     "question": "how old is your dog?",
     "options": [
-      "0-1 years", 
-      "2-4 years", 
-      "5-7 years", 
-      "8+ years"
+      {
+        "option": "0-1 years",
+        "id": "optionid1",
+        "imageurl": "http://example.com/path/to/img" 
+      },
+      {
+        "option": "2-4 years",
+        "id": "optionid2",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "5-7 years",
+        "id": "optionid3",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "8+ years",
+        "id": "optionid4",
+        "imageurl": "http://example.com/path/to/img"
+      }
     ]
   },
   {
-    "question": "what best describes your dog?",
-    "options": [
-      "asshole",
-      "shithead",
-      "dickhole",
-      "pain in the butt"
-    ]
-  },
-  {
+    "id": 2,
+    "step": 3,
     "question": "how much does your dog weigh?",
-    "options": [
-      "0-5lbs",
-      "6-10lbs",
-      "10-20lbs",
-      "20+lbs"
+    "options": [{
+        "option": "0-1 years",
+        "id": "optionid1",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "2-4 years",
+        "id": "optionid2",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "5-7 years",
+        "id": "optionid3",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "8+ years",
+        "id": "optionid4",
+        "imageurl": "http://example.com/path/to/img"
+      }
     ]
   },
   {
+    "id": 3,
+    "step": 4,
     "question": "why did you get a dog?",
-    "options": [
-      "chicks, man",
-      "for a future meal",
-      "to fetch the mail",
-      "i don't have a dog"
+    "options": [{
+        "option": "0-1 years",
+        "id": "optionid1",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "2-4 years",
+        "id": "optionid2",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "5-7 years",
+        "id": "optionid3",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "8+ years",
+        "id": "optionid4",
+        "imageurl": "http://example.com/path/to/img"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "step": 5,
+    "question": "what best describes your dog?",
+    "options": [{
+        "option": "0-1 years",
+        "id": "optionid1",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "2-4 years",
+        "id": "optionid2",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "5-7 years",
+        "id": "optionid3",
+        "imageurl": "http://example.com/path/to/img"
+      },
+      {
+        "option": "8+ years",
+        "id": "optionid4",
+        "imageurl": "http://example.com/path/to/img"
+      }
     ]
   }
 ]
