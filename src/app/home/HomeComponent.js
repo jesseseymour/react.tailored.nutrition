@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import StepSelector from './StepSelectorComponent'
 import PetDetails from './PetDetailsComponent'
 import Question from './QuestionComponent'
@@ -10,29 +10,15 @@ class HomeComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      questions:null
+      questions: null,
+      totalSteps: 2
     }
   }
 
   componentDidMount = () => {
-
     fetch('/data/questions.json')
       .then(results => results.json())
-      .then(questions => this.setState({questions}))
-
-    //#region
-    /*const pathArr = this.props.location.pathname.split('/')
-    let stepNum
-
-     if (pathArr.indexOf('step') >= 0 && pathArr.length > 2) {
-      stepNum = parseInt(pathArr[pathArr.indexOf('step') + 1])
-      if (stepNum !== this.props.step) {
-        //this.redirectToStep(this.props.step)
-      }
-    } else {
-      //this.props.history.push(`/step/1`)
-    } */
-    //#endregion
+      .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
   }
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
@@ -41,16 +27,23 @@ class HomeComponent extends Component {
     stepFromUrl !== this.props.step ? this.props.setStep(stepFromUrl) : null
   }
 
-  redirectToStep = stepNum => {
-    this.props.history.push(`/step/${stepNum}`)
+  redirectToStep = step => {
+    this.props.history.push(`/step/${step}`)
+  }
+
+  isValidStep = step => {
+
   }
 
   updatePetDetails = (name, type="") => {
     this.props.updatePetDetails({ name, type })
   }
 
-  updateAnswer = (questionId, optionId) => {
+  updateAnswer = (questionId, optionId, nextStep = false) => {
     this.props.updateSelection(questionId, optionId)
+      .then(
+        () => nextStep ? this.redirectToStep(this.props.step + 1) : null
+      )
   }
   
   render() {
@@ -72,6 +65,7 @@ class HomeComponent extends Component {
     return (
       <div>
         <div style={styles.container}>
+          <Route exact path='/' render={() => <Redirect to='/step/1' />} />
           <TransitionGroup>
             <CSSTransition key={this.props.location.key} classNames='fade' timeout={300}>
               <Switch location={this.props.location}>

@@ -34,7 +34,7 @@ class Question extends Component {
             </div>
           ) : null
         }
-        <button onClick={() => this.props.handleSubmit(question.id, this.state.selection)}>Update Answer</button>
+        <button onClick={() => this.props.handleSubmit(question.id, this.state.selection, true)}>Update Answer</button>
       </div>
     )
   }

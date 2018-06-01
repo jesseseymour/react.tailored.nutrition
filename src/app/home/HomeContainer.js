@@ -43,6 +43,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         appOperations.updateSelection(questionIndex,optionIndex)
       )
+      return Promise.resolve()
     },
     reset(){
       dispatch(
