@@ -113,7 +113,7 @@ class HomeComponent extends Component {
           selections={this.props.selections}
           questions={this.state.questions}
           handleUpdatePet={name => this.updatePetDetails(name)}
-          handleSelectionUpdate={(questionIndex, optionIndex) => this.updateAnswer(questionIndex, optionIndex)}
+          handleSelectionUpdate={(questionId, optionId) => this.updateAnswer(questionId, optionId)}
           step={this.props.step}
           />
         <p onClick={() => this.props.reset().then(() => this.props.history.push('/step/1'))}>start over</p>

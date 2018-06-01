@@ -18,7 +18,7 @@ class Status extends Component {
     Object.entries(selections).map((selection, index) => {
       const question = questions.find(question => question.id === parseInt(selection[0]))
       const answer = question.options.find(option => option.id === selection[1])
-      arr.push({question: question.question, questionId: question.id, answer: answer.option})
+      arr.push({question: question, answer: answer.option})
     })
     return arr
   }
@@ -50,7 +50,23 @@ class Status extends Component {
         </dd>
         {
           answeredQuestions.map((entry,i) => {
-            return <dd key={i}>{entry.question} {entry.answer}</dd>
+            return (
+              <dd key={i}>
+                {entry.question.question} {entry.answer}
+                <ul>
+                  {
+                    entry.question.options.map((option, i) => {
+                      return (
+                        <li key={i}
+                            onClick={() => handleSelectionUpdate(entry.question.id, option.id)}>
+                          {option.option}
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              </dd>
+            )
           })
         }
       </dl>
