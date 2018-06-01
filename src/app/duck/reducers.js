@@ -8,7 +8,13 @@ const INITIAL_STATE_OBJECT =
       type: "",
       name: ""
     },
-    selections: {},
+    selections: [
+      {
+        step: 2,
+        id: 1,
+        optionid: "optionid1"
+      }
+    ],
     step: 1,
     suggestedProduct: ""
   }
@@ -20,8 +26,8 @@ const INITIAL_STATE = (!localStorage["redux-store"])
   : INITIAL_STATE_OBJECT
   
 
-
-const appReducer = (state=INITIAL_STATE, action) => {
+//const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to utilize local storage
+const appReducer = (state=INITIAL_STATE_OBJECT, action) => {
   switch (action.type){
     case types.TOGGLE_BOOL: {
       return {
@@ -63,9 +69,18 @@ const appReducer = (state=INITIAL_STATE, action) => {
       )
     }
     case types.UPDATE_SELECTION: {
+
+      const foundIndex = state.selections.findIndex( x => x.id === action.payload.questionId)
+      const newSelections = state.selections.map( (x, i) => i === foundIndex ? {...x, optionid: action.payload.optionId} : x)
+
+
+      const payload = action.payload
+      return state
+      //gotta get this figured out.
       return {
         ...state,
-        selections: {...state.selections, [parseInt(action.payload.questionId)]: action.payload.optionId}
+        //selections: {...state.selections, [parseInt(action.payload.questionId)]: action.payload.optionId}
+        selections: {...state.selections, newSelections}
       }
     }
     case types.RESET: {

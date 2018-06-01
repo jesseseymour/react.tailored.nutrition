@@ -11,7 +11,8 @@ class HomeComponent extends Component {
     super(props)
     this.state = {
       questions: null,
-      totalSteps: 2
+      totalSteps: 2,
+      advance: false
     }
   }
 
@@ -22,28 +23,56 @@ class HomeComponent extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
+    const stepFromPathname = this.getStepFromPathname()
+    stepFromPathname !== this.props.step ? this.props.setStep(stepFromPathname) : null
+
+    //this.isAppReadyToAdvance()
+  }
+
+  getStepFromPathname = () => {
     const pathnameArr = this.props.location.pathname.split('/')
-    const stepFromUrl = parseInt(pathnameArr[pathnameArr.indexOf('step') + 1])
-    stepFromUrl !== this.props.step ? this.props.setStep(stepFromUrl) : null
+    return parseInt(pathnameArr[pathnameArr.indexOf('step') + 1])
   }
 
   redirectToStep = step => {
-    this.props.history.push(`/step/${step}`)
-  }
-
-  isValidStep = step => {
-
+    //this.setState({advance: false})
+    //this.props.history.push(`/step/${step}`)
   }
 
   updatePetDetails = (name, type="") => {
+    this.readyToAdvance()
     this.props.updatePetDetails({ name, type })
   }
 
-  updateAnswer = (questionId, optionId, nextStep = false) => {
-    this.props.updateSelection(questionId, optionId)
-      .then(
-        () => nextStep ? this.redirectToStep(this.props.step + 1) : null
-      )
+  updateAnswer = (questionId, questionStep, optionId, nextStep = false) => {
+    this.props.updateSelection(questionId, questionStep, optionId)
+      .then(() => nextStep ? this.redirectToStep(this.props.step + 1) : null)
+  }
+
+  isAppReadyToAdvance = () => {
+    let advance = false
+
+    switch (this.props.step) {
+      case 1 : {
+        this.props.petDetails.name ? advance = true : null
+      }
+      case this.state.totalSteps : {
+        advance = false
+      }
+      default: {
+        // questions ? questions.find( question => question.step === this.props.step ) >= 0
+        // if (this.props.selections){
+        //   Object.entries(this.props.selections)
+        // }
+      }
+    }
+
+    //advance !== this.state.advance ? this.setState({advance}) : null
+
+  }
+
+  readyToAdvance = () => {
+    this.setState({advance: true})
   }
   
   render() {
@@ -78,7 +107,7 @@ class HomeComponent extends Component {
                         {...props}
                         step={this.props.step}
                         petDetails={this.props.petDetails}
-                        handleSubmit={this.updatePetDetails} 
+                        handleSubmit={this.updatePetDetails}
                         styles={styles.content} />
                   } />
                 <Route
@@ -91,7 +120,8 @@ class HomeComponent extends Component {
                         step={this.props.step}
                         selection={null}
                         questions={this.state.questions ? this.state.questions : null}
-                        handleSubmit={this.updateAnswer} 
+                        handleSubmit={this.updateAnswer}
+                        readyToAdvance={this.readyToAdvance}
                         styles={styles.content} />
                   } />
               </Switch>
@@ -100,16 +130,17 @@ class HomeComponent extends Component {
         </div>
         <StepSelector 
           step={this.props.step}
+          isReadyToAdvance={this.state.advance}
           nextStep={() => this.props.history.push(`/step/${this.props.step + 1}`)}
           prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} />
-        <Status 
+        {/* <Status 
           petName={this.props.petDetails.name} 
           selections={this.props.selections}
           questions={this.state.questions}
           handleUpdatePet={name => this.updatePetDetails(name)}
           handleSelectionUpdate={(questionId, optionId) => this.updateAnswer(questionId, optionId)}
           step={this.props.step}
-          />
+          /> */}
         <p onClick={() => this.props.reset().then(() => this.props.history.push('/step/1'))}>start over</p>
       </div>
     )

@@ -25,23 +25,23 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         appOperations.setStep(step)
       )
-      return Promise.resolve()
+      //return Promise.resolve()
     },
     nextStep() {
       dispatch(
         appOperations.nextStep()
       )
-      return Promise.resolve()
+      //return Promise.resolve()
     },
     prevStep() {
       dispatch(
         appOperations.prevStep()
       )
-      return Promise.resolve()
+      //return Promise.resolve()
     },
-    updateSelection(questionIndex,optionIndex) {
+    updateSelection(questionIndex,questionStep,optionIndex) {
       dispatch(
-        appOperations.updateSelection(questionIndex,optionIndex)
+        appOperations.updateSelection(questionIndex,questionStep,optionIndex)
       )
       return Promise.resolve()
     },

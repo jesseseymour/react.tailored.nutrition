@@ -1,11 +1,11 @@
 import React from 'react'
 
-const StepSelector = ({step, nextStep, prevStep}) => {
+const StepSelector = ({step, nextStep, prevStep, isReadyToAdvance}) => {
    
   return (
     <div>
       <button onClick={prevStep}>Previous Step</button>
-      <button onClick={nextStep}>Next Step</button>
+      <button disabled={!isReadyToAdvance} onClick={nextStep}>Next Step</button>
     </div>
   )
 }
