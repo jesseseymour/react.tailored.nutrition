@@ -8,13 +8,7 @@ const INITIAL_STATE_OBJECT =
       type: "",
       name: ""
     },
-    selections: [
-      {
-        step: 2,
-        id: 1,
-        optionid: "optionid1"
-      }
-    ],
+    selections: [],
     step: 1,
     suggestedProduct: ""
   }
@@ -70,17 +64,29 @@ const appReducer = (state=INITIAL_STATE_OBJECT, action) => {
     }
     case types.UPDATE_SELECTION: {
 
-      const foundIndex = state.selections.findIndex( x => x.id === action.payload.questionId)
-      const newSelections = state.selections.map( (x, i) => i === foundIndex ? {...x, optionid: action.payload.optionId} : x)
+      const foundIndex = state.selections.findIndex( x => x.questionId === action.payload.questionId)
 
+      //edit entry if found questionId found in state.selections
+      if (foundIndex >= 0) {
+        return {
+          ...state,
+          selections: state.selections.map((item,index) => {
+            if (index !== foundIndex) {
+              return item
+            }
 
-      const payload = action.payload
-      return state
-      //gotta get this figured out.
+            return {
+              ...item,
+              ...action.payload
+            }
+          })
+        }
+      }
+
+      //add entry if questionId not found in state.selections
       return {
         ...state,
-        //selections: {...state.selections, [parseInt(action.payload.questionId)]: action.payload.optionId}
-        selections: {...state.selections, newSelections}
+        selections: [...state.selections, action.payload]
       }
     }
     case types.RESET: {
