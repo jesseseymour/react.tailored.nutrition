@@ -36,7 +36,7 @@ class HomeComponent extends Component {
 
   redirectToStep = step => {
     //this.setState({advance: false})
-    //this.props.history.push(`/step/${step}`)
+    this.props.history.push(`/step/${step}`)
   }
 
   updatePetDetails = (name, type="") => {
@@ -133,14 +133,14 @@ class HomeComponent extends Component {
           isReadyToAdvance={this.state.advance}
           nextStep={() => this.props.history.push(`/step/${this.props.step + 1}`)}
           prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} />
-        {/* <Status 
+        <Status 
           petName={this.props.petDetails.name} 
           selections={this.props.selections}
           questions={this.state.questions}
           handleUpdatePet={name => this.updatePetDetails(name)}
-          handleSelectionUpdate={(questionId, optionId) => this.updateAnswer(questionId, optionId)}
+          handleSelectionUpdate={(questionId, step, optionId) => this.updateAnswer(questionId, step, optionId)}
           step={this.props.step}
-          /> */}
+          />
         <p onClick={() => this.props.reset().then(() => this.props.history.push('/step/1'))}>start over</p>
       </div>
     )

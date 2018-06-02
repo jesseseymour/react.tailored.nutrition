@@ -15,11 +15,13 @@ class Status extends Component {
   getAnsweredQuestions = () => {
     const { selections, questions } = this.props
     let arr = []
-    Object.entries(selections).map((selection, index) => {
-      const question = questions.find(question => question.id === parseInt(selection[0]))
-      const answer = question.options.find(option => option.id === selection[1])
-      arr.push({question: question, answer: answer.option})
-    })
+    if (selections.length > 0) {
+      selections.map((selection, index) => {
+        const question = questions.find(question => question.id === selection.questionId)
+        const answer = question.options.find(option => option.id === selection.optionId)
+        arr.push({question: question, answer: answer.option})
+      })
+    }
     return arr
   }
 
@@ -58,7 +60,7 @@ class Status extends Component {
                     entry.question.options.map((option, i) => {
                       return (
                         <li key={i}
-                            onClick={() => handleSelectionUpdate(entry.question.id, option.id)}>
+                            onClick={() => handleSelectionUpdate(entry.question.id, entry.question.step, option.id)}>
                           {option.option}
                         </li>
                       )
