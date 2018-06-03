@@ -60,7 +60,7 @@ class Status extends Component {
                     entry.question.options.map((option, i) => {
                       return (
                         <li key={i}
-                            onClick={() => handleSelectionUpdate(entry.question.id, entry.question.step, option.id)}>
+                            onClick={() => handleSelectionUpdate({questionId:entry.question.id, questionStep:entry.question.step, optionId:option.id})}>
                           {option.option}
                         </li>
                       )

@@ -44,7 +44,7 @@ class HomeComponent extends Component {
     this.props.updatePetDetails({ name, type })
   }
 
-  updateAnswer = (questionId, questionStep, optionId, nextStep = false) => {
+  updateAnswer = ({questionId, questionStep, optionId, nextStep = false}) => {
     this.props.updateSelection(questionId, questionStep, optionId)
       .then(() => nextStep ? this.redirectToStep(this.props.step + 1) : null)
   }

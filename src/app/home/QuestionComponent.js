@@ -29,7 +29,7 @@ class Question extends Component {
             <div>
               {question.question}
               {question.options.map((option, index) =>
-                <button key={index} onClick={() => this.props.handleSubmit(question.id, question.step, option.id, true)}>{option.option}</button>
+                <button key={index} onClick={() => this.props.handleSubmit({questionId:question.id, questionStep:question.step, optionId:option.id, nextStep:true})}>{option.option}</button>
               )}
             </div>
           ) : null
