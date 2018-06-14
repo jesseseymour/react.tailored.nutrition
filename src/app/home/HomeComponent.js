@@ -17,6 +17,12 @@ class HomeComponent extends Component {
   }
 
   componentDidMount = () => {
+    const stepFromPathname = this.getStepFromPathname()
+    if(stepFromPathname > 0 && stepFromPathname <= this.props.totalSteps && this.props.step > 0 && this.props.step <= this.props.totalSteps){
+      if(this.props.step < stepFromPathname){
+        this.props.history.push(`/step/${this.props.step + 1}`)
+      }
+    }
     fetch('/data/questions.json')
       .then(results => results.json())
       .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
@@ -28,6 +34,14 @@ class HomeComponent extends Component {
       this.props.setStep(stepFromPathname)
         .then(this.setState({advance:false}))
        ) : null
+  }
+
+  isValidStep = () => {
+    const stepFromPathname = this.getStepFromPathname()
+    if ((this.props.step > 0 && stepFromPathname > this.props.step || (this.props.step > this.props.totalSteps || this.props.step < 1))){
+      return false
+    }
+    return true
   }
 
   getStepFromPathname = () => {

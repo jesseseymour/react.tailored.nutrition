@@ -20,8 +20,8 @@ const INITIAL_STATE = (!localStorage["redux-store"])
   : INITIAL_STATE_OBJECT
   
 
-//const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to utilize local storage
-const appReducer = (state=INITIAL_STATE_OBJECT, action) => {
+const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to utilize local storage
+// const appReducer = (state=INITIAL_STATE_OBJECT, action) => {
   switch (action.type){
     case types.TOGGLE_BOOL: {
       return {
