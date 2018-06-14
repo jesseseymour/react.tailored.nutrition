@@ -1,25 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class PetDetails extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      name: props.petDetails.name
-    }
-  }
-
-  handleChange = (e) => {
-    this.setState({ name: e.target.value })
-  }
-
-  render() {
-    return (
-      <div style={this.props.styles}>
-        <input type="text" name="name" required value={this.state.name} onChange={(e) => this.handleChange(e)} />
-        <button onClick={() => this.props.handleSubmit(this.state.name)}>Update Pet Name</button>
-      </div>
-    )
-  }
+const PetDetails = ({styles, petDetails, handleUpdatePetDetails}) => {
+  return (
+    <div style={styles}>
+      <input type="text" name="name" required value={petDetails.name} onChange={(e) => handleUpdatePetDetails(e.target.value)} />
+    </div>
+  )
 }
+
 
 export default PetDetails
