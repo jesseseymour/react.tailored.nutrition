@@ -24,9 +24,10 @@ class HomeComponent extends Component {
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     const stepFromPathname = this.getStepFromPathname()
-    stepFromPathname !== this.props.step ? this.props.setStep(stepFromPathname) : null
-
-    //this.isAppReadyToAdvance()
+    stepFromPathname !== this.props.step ? (
+      this.props.setStep(stepFromPathname)
+        .then(this.setState({advance:false}))
+       ) : null
   }
 
   getStepFromPathname = () => {
@@ -46,7 +47,8 @@ class HomeComponent extends Component {
 
   updateAnswer = ({questionId, questionStep, optionId, nextStep = false}) => {
     this.props.updateSelection(questionId, questionStep, optionId)
-      .then(() => nextStep ? this.redirectToStep(this.props.step + 1) : null)
+      //.then(() => nextStep ? this.redirectToStep(this.props.step + 1) : null)
+      .then(() => this.readyToAdvance())
   }
 
   isAppReadyToAdvance = () => {
@@ -76,6 +78,7 @@ class HomeComponent extends Component {
   }
   
   render() {
+    const {totalSteps,step} = this.props
     const styles = {};
 
     styles.content = {
@@ -105,9 +108,9 @@ class HomeComponent extends Component {
                     props =>
                       <PetDetails
                         {...props}
-                        step={this.props.step}
+                        step={step}
                         petDetails={this.props.petDetails}
-                        handleSubmit={this.updatePetDetails}
+                        handleUpdatePetDetails={this.updatePetDetails}
                         styles={styles.content} />
                   } />
                 <Route
@@ -117,7 +120,7 @@ class HomeComponent extends Component {
                     props =>
                       <Question
                         {...props}
-                        step={this.props.step}
+                        step={step}
                         selection={null}
                         questions={this.state.questions ? this.state.questions : null}
                         handleSubmit={this.updateAnswer}
@@ -129,8 +132,9 @@ class HomeComponent extends Component {
           </TransitionGroup>
         </div>
         <StepSelector 
-          step={this.props.step}
-          isReadyToAdvance={this.state.advance}
+          next={step < totalSteps}
+          prev={step > 1}
+          isReadyToAdvance={this.props.selections.findIndex(selection => selection.step === this.props.step) > -1 ? true : this.state.advance}
           nextStep={() => this.props.history.push(`/step/${this.props.step + 1}`)}
           prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} />
         <Status 

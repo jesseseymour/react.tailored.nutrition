@@ -8,7 +8,7 @@ class App extends Component {
       <Router>
         <Route 
           render={({ location }) => (
-            <Home />
+            <Home totalSteps={6} />
           )}
         />
       </Router>

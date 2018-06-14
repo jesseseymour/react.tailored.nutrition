@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         appOperations.setStep(step)
       )
-      //return Promise.resolve()
+      return Promise.resolve()
     },
     nextStep() {
       dispatch(
