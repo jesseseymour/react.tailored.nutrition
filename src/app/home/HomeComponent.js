@@ -17,12 +17,13 @@ class HomeComponent extends Component {
   }
 
   componentDidMount = () => {
-    const stepFromPathname = this.getStepFromPathname()
-    if(stepFromPathname > 0 && stepFromPathname <= this.props.totalSteps && this.props.step > 0 && this.props.step <= this.props.totalSteps){
-      if(this.props.step < stepFromPathname){
-        this.props.history.push(`/step/${this.props.step + 1}`)
-      }
-    }
+    // const stepFromPathname = this.getStepFromPathname()
+    // if(stepFromPathname > 0 && stepFromPathname <= this.props.totalSteps && this.props.step > 0 && this.props.step <= this.props.totalSteps){
+    //   if(this.props.step < stepFromPathname){
+    //     this.hasQuestionBeenAnswered(this.props.step) ? this.props.history.push(`/step/${this.props.step + 1}`) : this.props.history.push(`/step/${this.props.step}`)
+    //   }
+    // }
+    this.checkPath()
     fetch('/data/questions.json')
       .then(results => results.json())
       .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
@@ -30,10 +31,51 @@ class HomeComponent extends Component {
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     const stepFromPathname = this.getStepFromPathname()
-    stepFromPathname !== this.props.step ? (
+    stepFromPathname !== this.props.step && stepFromPathname <= this.props.totalSteps && stepFromPathname >= 1 ? (
       this.props.setStep(stepFromPathname)
         .then(this.setState({advance:false}))
        ) : null
+  }
+
+  checkPath = () => {
+    const stepFromPathname = this.getStepFromPathname()
+    let step = 1
+    if (!Number.isInteger(stepFromPathname)){
+      //step from path is not an integer
+      //return step 1
+      return step
+    }
+
+    if (
+      stepFromPathname > 0 && 
+      stepFromPathname <= this.props.totalSteps && 
+      this.props.step > 0 && 
+      this.props.step <= this.props.totalSteps)
+    {
+      //step from path is in range
+      if (this.props.step < stepFromPathname){
+        //step from path is beyond latest step in redux
+        //send to step after last completed step
+        step = this.hasQuestionBeenAnswered(this.props.step) ? this.props.step + 1 : this.props.step
+      } else {
+        //step from path is valid
+        step = this.props.step
+      }
+    }
+    else
+    {
+      //step from path is out of range
+      //determine last completed step and return
+      if (this.props.step === 1 && this.props.petDetails.petName){
+        step = 2
+      }
+      else
+      {
+        step = this.hasQuestionBeenAnswered(this.props.step) ? this.props.step + 1 : this.props.step
+      }
+    }
+
+    return step
   }
 
   isValidStep = () => {
@@ -65,6 +107,8 @@ class HomeComponent extends Component {
       .then(() => this.readyToAdvance())
   }
 
+  hasQuestionBeenAnswered = (step) => this.props.selections.findIndex(selection => selection.step === step) > -1
+
   isAppReadyToAdvance = () => {
     let advance = false
 
@@ -72,19 +116,12 @@ class HomeComponent extends Component {
       case 1 : {
         this.props.petDetails.name ? advance = true : null
       }
-      case this.state.totalSteps : {
-        advance = false
-      }
       default: {
-        // questions ? questions.find( question => question.step === this.props.step ) >= 0
-        // if (this.props.selections){
-        //   Object.entries(this.props.selections)
-        // }
+        this.hasQuestionBeenAnswered(this.props.step) ? advance = true : null
       }
     }
 
-    //advance !== this.state.advance ? this.setState({advance}) : null
-
+    return advance
   }
 
   readyToAdvance = () => {
@@ -148,7 +185,7 @@ class HomeComponent extends Component {
         <StepSelector 
           next={step < totalSteps}
           prev={step > 1}
-          isReadyToAdvance={this.props.selections.findIndex(selection => selection.step === this.props.step) > -1 ? true : this.state.advance}
+          isReadyToAdvance={this.isAppReadyToAdvance() ? true : this.state.advance}
           nextStep={() => this.props.history.push(`/step/${this.props.step + 1}`)}
           prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} />
         <Status 
