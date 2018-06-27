@@ -18,8 +18,16 @@ class HomeComponent extends Component {
 
   componentDidMount = () => {
     this.checkPath() //check for valid path and redirect to appropriate step if out of range
-    fetch('/data/questions.json')
-      .then(results => results.json())
+    //fetch('/data/questions.json')
+    fetch('/api/survey/index?survey=dog', {
+      headers: {
+        'content-type': 'text/xml'
+      }
+    })
+      //.then(results => results.json())
+      .then(function(results){
+        return results.json()
+      })
       .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
   }
 
