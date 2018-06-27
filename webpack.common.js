@@ -8,13 +8,6 @@ module.exports = {
 		filename: "bundle.js",
 		publicPath: "/assets/"
 	},
-	devtool: "source-map",
-	devServer: {
-		inline: true,
-		contentBase: './dist',
-		port: 3000,
-		historyApiFallback: true
-	},
 	module: {
 		loaders: [
 			{
