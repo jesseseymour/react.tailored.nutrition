@@ -23,7 +23,7 @@ class HomeComponent extends Component {
       .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
   }
 
-  componentDidUpdate = (prevProps, prevState, snapshot) => {
+  componentDidUpdate = () => {
     const stepFromPathname = this.getStepFromPathname()
     stepFromPathname !== this.props.step && stepFromPathname <= this.state.totalSteps && stepFromPathname >= 1 ? (
       this.props.setStep(stepFromPathname, this.state.totalSteps)
@@ -81,6 +81,11 @@ class HomeComponent extends Component {
 
   readyToAdvance = () => {
     this.setState({advance: true})
+  }
+
+  resetApp = () => {
+    //reset redux state after updating history
+    Promise.resolve(this.props.history.push('/step/1')).then(this.props.reset())
   }
   
   render() {
@@ -152,7 +157,7 @@ class HomeComponent extends Component {
           handleSelectionUpdate={(questionId, step, optionId) => this.updateAnswer(questionId, step, optionId)}
           step={this.props.step}
           />
-        <p onClick={() => this.props.reset().then(() => this.props.history.push('/step/1'))}>start over</p>
+        <p onClick={() => this.resetApp()}>start over</p>
       </div>
     )
   }
