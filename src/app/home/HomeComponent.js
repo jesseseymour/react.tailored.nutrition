@@ -11,19 +11,13 @@ class HomeComponent extends Component {
     super(props)
     this.state = {
       questions: null,
-      totalSteps: 2,
+      totalSteps: 1,
       advance: false
     }
   }
 
   componentDidMount = () => {
-    // const stepFromPathname = this.getStepFromPathname()
-    // if(stepFromPathname > 0 && stepFromPathname <= this.props.totalSteps && this.props.step > 0 && this.props.step <= this.props.totalSteps){
-    //   if(this.props.step < stepFromPathname){
-    //     this.hasQuestionBeenAnswered(this.props.step) ? this.props.history.push(`/step/${this.props.step + 1}`) : this.props.history.push(`/step/${this.props.step}`)
-    //   }
-    // }
-    this.checkPath()
+    this.checkPath() //check for valid path and redirect to appropriate step if out of range
     fetch('/data/questions.json')
       .then(results => results.json())
       .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
@@ -31,60 +25,23 @@ class HomeComponent extends Component {
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     const stepFromPathname = this.getStepFromPathname()
-    stepFromPathname !== this.props.step && stepFromPathname <= this.props.totalSteps && stepFromPathname >= 1 ? (
-      this.props.setStep(stepFromPathname)
+    stepFromPathname !== this.props.step && stepFromPathname <= this.state.totalSteps && stepFromPathname >= 1 ? (
+      this.props.setStep(stepFromPathname, this.state.totalSteps)
         .then(this.setState({advance:false}))
        ) : null
   }
 
   checkPath = () => {
     const stepFromPathname = this.getStepFromPathname()
-    let step = 1
-    if (!Number.isInteger(stepFromPathname)){
-      //step from path is not an integer
-      //return step 1
-      return step
+    const {completedStep,totalSteps} = this.props
+    
+    //if stepFromPathname is ahead of last completed step, NaN or below 1, redirect to last completed step
+    if (stepFromPathname > completedStep || !Number.isInteger(stepFromPathname) || stepFromPathname < 1 ){
+      this.redirectToStep(completedStep === totalSteps ? completedStep : completedStep + 1)
     }
-
-    if (
-      stepFromPathname > 0 && 
-      stepFromPathname <= this.props.totalSteps && 
-      this.props.step > 0 && 
-      this.props.step <= this.props.totalSteps)
-    {
-      //step from path is in range
-      if (this.props.step < stepFromPathname){
-        //step from path is beyond latest step in redux
-        //send to step after last completed step
-        step = this.hasQuestionBeenAnswered(this.props.step) ? this.props.step + 1 : this.props.step
-      } else {
-        //step from path is valid
-        step = this.props.step
-      }
-    }
-    else
-    {
-      //step from path is out of range
-      //determine last completed step and return
-      if (this.props.step === 1 && this.props.petDetails.petName){
-        step = 2
-      }
-      else
-      {
-        step = this.hasQuestionBeenAnswered(this.props.step) ? this.props.step + 1 : this.props.step
-      }
-    }
-
-    return step
   }
 
-  isValidStep = () => {
-    const stepFromPathname = this.getStepFromPathname()
-    if ((this.props.step > 0 && stepFromPathname > this.props.step || (this.props.step > this.props.totalSteps || this.props.step < 1))){
-      return false
-    }
-    return true
-  }
+  
 
   getStepFromPathname = () => {
     const pathnameArr = this.props.location.pathname.split('/')
@@ -92,7 +49,6 @@ class HomeComponent extends Component {
   }
 
   redirectToStep = step => {
-    //this.setState({advance: false})
     this.props.history.push(`/step/${step}`)
   }
 
@@ -103,7 +59,6 @@ class HomeComponent extends Component {
 
   updateAnswer = ({questionId, questionStep, optionId, nextStep = false}) => {
     this.props.updateSelection(questionId, questionStep, optionId)
-      //.then(() => nextStep ? this.redirectToStep(this.props.step + 1) : null)
       .then(() => this.readyToAdvance())
   }
 
@@ -129,7 +84,8 @@ class HomeComponent extends Component {
   }
   
   render() {
-    const {totalSteps,step} = this.props
+    const { step } = this.props
+    const { totalSteps } = this.state
     const styles = {};
 
     styles.content = {

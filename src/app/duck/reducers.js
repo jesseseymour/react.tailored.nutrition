@@ -10,6 +10,7 @@ const INITIAL_STATE_OBJECT =
     },
     selections: [],
     step: 1,
+    completedStep: 0,
     suggestedProduct: ""
   }
 
@@ -41,9 +42,17 @@ const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to
       }
     }
     case types.SET_STEP: {
-      return {
-        ...state,
-        step: action.payload
+      if(action.payload.step > state.completedStep){
+        return {
+          ...state,
+          step: action.payload.step,
+          completedStep: action.payload.step - 1
+        }
+      }else{
+        return {
+          ...state,
+          step: action.payload.step
+        }
       }
     }
     case types.NEXT_STEP: {
