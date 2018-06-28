@@ -54,7 +54,7 @@ class Status extends Component {
           answeredQuestions.map((entry,i) => {
             return (
               <dd key={i}>
-                {entry.question.question} {entry.answer}
+                {entry.question.question.replace('${petname}', this.props.petName ? this.props.petName : 'your pet')} {entry.answer}
                 <ul>
                   {
                     entry.question.options.map((option, i) => {

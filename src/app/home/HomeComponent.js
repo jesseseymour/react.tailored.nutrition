@@ -5,6 +5,7 @@ import StepSelector from './StepSelectorComponent'
 import PetDetails from './PetDetailsComponent'
 import Question from './QuestionComponent'
 import Status from './StatusComponent'
+import Results from './ResultsComponent'
 
 class HomeComponent extends Component {
   constructor(props) {
@@ -18,17 +19,14 @@ class HomeComponent extends Component {
 
   componentDidMount = () => {
     this.checkPath() //check for valid path and redirect to appropriate step if out of range
-    //fetch('/data/questions.json')
     fetch('/api/survey/index?survey=dog', {
       headers: {
         'content-type': 'text/xml'
       }
     })
-      //.then(results => results.json())
-      .then(function(results){
-        return results.json()
-      })
-      .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
+    .then(this.handleErrors)
+    .then(results => results.json())
+    .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
   }
 
   componentDidUpdate = () => {
@@ -39,17 +37,26 @@ class HomeComponent extends Component {
        ) : null
   }
 
+  handleErrors(response) {
+    if (!response.ok) {
+      throw Error(response.statusText)
+    }
+    return response
+  }
+
   checkPath = () => {
     const stepFromPathname = this.getStepFromPathname()
     const {completedStep,totalSteps} = this.props
     
     //if stepFromPathname is ahead of last completed step, NaN or below 1, redirect to last completed step
-    if (stepFromPathname > completedStep || !Number.isInteger(stepFromPathname) || stepFromPathname < 1 ){
+    if (
+      stepFromPathname > completedStep || 
+      !Number.isInteger(stepFromPathname) || 
+      stepFromPathname < 1 ||
+      this.props.location.pathname.includes('results')){
       this.redirectToStep(completedStep === totalSteps ? completedStep : completedStep + 1)
     }
   }
-
-  
 
   getStepFromPathname = () => {
     const pathnameArr = this.props.location.pathname.split('/')
@@ -94,6 +101,25 @@ class HomeComponent extends Component {
   resetApp = () => {
     //reset redux state after updating history
     Promise.resolve(this.props.history.push('/step/1')).then(this.props.reset())
+  }
+
+  submitAnswers = () => {
+    Promise.resolve(this.props.history.push('/results'))
+      .then(this.fetchResults())
+  }
+
+  fetchResults = () => {
+    const optionsStr = `[${this.props.selections.map(option => `"${option.optionId}"`)}]`
+    fetch(`/api/survey/recommendation?options=${optionsStr}`, {
+      headers: {
+        'content-type': 'text/xml'
+      }
+    })
+      .then(this.handleErrors)
+      .then(results => results.json())
+      .then(function(results){
+        console.log(results)
+      })
   }
   
   render() {
@@ -140,6 +166,7 @@ class HomeComponent extends Component {
                     props =>
                       <Question
                         {...props}
+                        petName={this.props.petDetails.name}
                         step={step}
                         selection={null}
                         questions={this.state.questions ? this.state.questions : null}
@@ -147,6 +174,16 @@ class HomeComponent extends Component {
                         readyToAdvance={this.readyToAdvance}
                         styles={styles.content} />
                   } />
+                <Route
+                  path="/results"
+                  render={
+                    props =>
+                      <Results
+                        {...props}
+                        styles={styles.content}
+                        />
+                  }
+                />
               </Switch>
             </CSSTransition>
           </TransitionGroup>
@@ -154,9 +191,11 @@ class HomeComponent extends Component {
         <StepSelector 
           next={step < totalSteps}
           prev={step > 1}
+          results={step === totalSteps}
           isReadyToAdvance={this.isAppReadyToAdvance() ? true : this.state.advance}
-          nextStep={() => this.props.history.push(`/step/${this.props.step + 1}`)}
-          prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} />
+          nextStep={() => this.props.step === this.state.totalSteps ? this.props.history.push('/results') : this.props.history.push(`/step/${this.props.step + 1}`)}
+          prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} 
+          getResults={() => this.submitAnswers()} />
         <Status 
           petName={this.props.petDetails.name} 
           selections={this.props.selections}

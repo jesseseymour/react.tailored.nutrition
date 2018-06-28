@@ -27,14 +27,13 @@ class Question extends Component {
         {
           question ? (
             <div>
-              {question.question}
+              {question.question.replace('${petname}', this.props.petName ? this.props.petName : 'your pet')}
               {question.options.map((option, index) =>
                 <button key={index} onClick={() => this.props.handleSubmit({questionId:question.id, questionStep:question.step, optionId:option.id, nextStep:true})}>{option.option}</button>
               )}
             </div>
           ) : null
         }
-        {/* <button onClick={() => this.props.handleSubmit(question.id, this.state.selection, true)}>Update Answer</button> */}
       </div>
     )
   }
