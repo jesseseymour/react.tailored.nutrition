@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Results = ({styles}) => {
+const Results = ({styles, results}) => {
   return (
     <div style={styles}>
-      Results Page
+      {results ? JSON.stringify(results) : null}
     </div>
   )
 }

@@ -21,9 +21,9 @@ const mapDispatchToProps = dispatch => {
         appOperations.updatePetDetails(payload)
       )
     },
-    setStep(step, totalSteps) {
+    setStep(step, totalSteps, complete=false) {
       dispatch(
-        appOperations.setStep(step, totalSteps)
+        appOperations.setStep(step, totalSteps, complete)
       )
       return Promise.resolve()
     },

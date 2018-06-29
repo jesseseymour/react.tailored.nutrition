@@ -10,11 +10,12 @@ const updatePetDetails = payload => ({
   payload: payload
 })
 
-const setStep = (step, totalSteps) => ({
+const setStep = (step, totalSteps, complete) => ({
   type: types.SET_STEP,
   payload: {
     totalSteps,
-    step
+    step,
+    complete
   }
 })
 

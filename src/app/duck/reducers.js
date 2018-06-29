@@ -42,6 +42,12 @@ const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to
       }
     }
     case types.SET_STEP: {
+      if(action.payload.complete){
+        return {
+          ...state,
+          completedStep: action.payload.totalSteps
+        }
+      }
       if(action.payload.step > state.completedStep){
         return {
           ...state,
