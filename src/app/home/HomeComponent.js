@@ -77,8 +77,8 @@ class HomeComponent extends Component {
     this.props.updatePetDetails({ name, type })
   }
 
-  updateAnswer = ({questionId, questionStep, optionId, nextStep = false}) => {
-    this.props.updateSelection(questionId, questionStep, optionId)
+  updateAnswer = ({questionId, questionStep, optionId, updateFn = this.props.updateSelection}) => {
+    updateFn(questionId, questionStep, optionId)
       .then(() => this.readyToAdvance())
   }
 
@@ -199,7 +199,7 @@ class HomeComponent extends Component {
           results={step === totalSteps && this.props.location.pathname.split('/').indexOf('step') > -1}
           isReadyToAdvance={this.isAppReadyToAdvance() ? true : this.state.advance}
           nextStep={() => this.props.step === this.state.totalSteps ? this.props.history.push('/results') : this.props.history.push(`/step/${this.props.step + 1}`)}
-          prevStep={() => this.props.history.push(`/step/${this.props.step - 1}`)} 
+          prevStep={() => this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/step/${this.props.step}`) : this.props.history.push(`/step/${this.props.step - 1}`)} 
           getResults={() => this.submitAnswers()} />
 
 
