@@ -11,7 +11,7 @@ class HomeComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false,
+      loading: true,
       questions: null,
       totalSteps: 1,
       advance: false,
@@ -20,15 +20,19 @@ class HomeComponent extends Component {
   }
 
   componentDidMount = () => {
+    this.fetchWithTimeout(1000,
     fetch('/api/survey/index?survey=dog', {
       headers: {
         'content-type': 'text/xml'
       }
-    })
+    }))
     .then(this.handleErrors)
     .then(results => results.json())
-    .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length}))
+    .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length, loading: false}))
     .then(() => this.checkPath())
+    .catch(function(error){
+      console.log(error)
+    })
   }
 
   componentDidUpdate = () => {
@@ -125,6 +129,15 @@ class HomeComponent extends Component {
       .then(results => this.setState({results}))
       .then(() => this.props.setStep(this.state.totalSteps, this.state.totalSteps, true))
   }
+
+  fetchWithTimeout(ms, promise) {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        reject(new Error("timeout"))
+      }, ms)
+      promise.then(resolve, reject)
+    })
+  }
   
   render() {
     const { step } = this.props
@@ -145,6 +158,7 @@ class HomeComponent extends Component {
       height: "300px"
     }
     return (
+      !this.state.loading ?
       <div>
         <div style={styles.container}>
           <Route exact path='/' render={() => <Redirect to='/step/1' />} />
@@ -215,6 +229,9 @@ class HomeComponent extends Component {
 
 
         <p onClick={() => this.resetApp()}>start over</p>
+      </div> :
+      <div>
+        <div className="loading">App is loading</div>
       </div>
     )
   }
