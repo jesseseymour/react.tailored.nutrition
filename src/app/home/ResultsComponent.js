@@ -8,5 +8,4 @@ const Results = ({styles, results}) => {
   )
 }
 
-
 export default Results
