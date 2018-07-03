@@ -1,6 +1,6 @@
-const Status = ({answeredQuestions}) => {
+const AnsweredQuestions = ({answers}) => {
   return (
-    answeredQuestions.reduce((accumulator, currentValue, currentIndex, array) => {
+    answers.reduce((accumulator, currentValue, currentIndex, array) => {
       currentIndex === 0 ? accumulator += 'Selected: ' : null
       accumulator += currentValue.answer
       currentIndex < array.length - 1 ? accumulator += ', ' : null
@@ -9,4 +9,4 @@ const Status = ({answeredQuestions}) => {
   )
 }
 
-export default Status
+export default AnsweredQuestions

@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import StepSelector from './StepSelectorComponent'
 import PetDetails from './PetDetailsComponent'
 import Question from './QuestionComponent'
-import Status from './StatusComponent'
+import AnsweredQuestions from './AnsweredQuestionsComponent'
 import Results from './ResultsComponent'
 import { 
   fetchWithTimeout, 
@@ -209,12 +209,12 @@ class HomeComponent extends Component {
 
 
         {this.props.location.pathname.split('/').indexOf('step') > -1 ? 
-          <Status 
-            answeredQuestions={this.getAnsweredQuestions()}
+          <AnsweredQuestions 
+            answers={this.getAnsweredQuestions()}
             /> : null}
 
 
-          <p onClick={() => resetApp(this.props.history, this.props.reset(), '/step/1')}>start over</p>
+          <p style={{'cursor':'pointer'}} onClick={() => resetApp(this.props.history, this.props.reset(), '/step/1')}>start over</p>
       </div> :
       <div>
         <div className="loading">App is loading</div>
