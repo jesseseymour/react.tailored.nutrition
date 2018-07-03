@@ -15,11 +15,13 @@ const ProgressBar = ({step, totalSteps, render}) => {
     backgroundColor: 'green',
     position: 'absolute',
     transform: 'translate(-50%,-50%)',
-    left: left
+    left: left,
+    textAlign: 'center',
+    color: 'white'
   }
   return (
     render ? <div style={barStyle} className="progressbar">
-      <div style={headStyle} className="progressbar__head"></div>
+      <div style={headStyle} className="progressbar__head">{step}</div>
     </div> : null
   )
 }
