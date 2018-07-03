@@ -6,6 +6,7 @@ import PetDetails from './PetDetailsComponent'
 import Question from './QuestionComponent'
 import AnsweredQuestions from './AnsweredQuestionsComponent'
 import Results from './ResultsComponent'
+import ProgressBar from './ProgressBarComponent'
 import { 
   fetchWithTimeout, 
   handleErrors, 
@@ -207,6 +208,10 @@ class HomeComponent extends Component {
           prevStep={() => this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/step/${this.props.step}`) : this.props.history.push(`/step/${this.props.step - 1}`)} 
           getResults={() => this.submitAnswers()} />
 
+        <ProgressBar 
+          step={step} 
+          totalSteps={totalSteps}
+          render={this.props.location.pathname.split('/').indexOf('step') > -1} />
 
         {this.props.location.pathname.split('/').indexOf('step') > -1 ? 
           <AnsweredQuestions 
