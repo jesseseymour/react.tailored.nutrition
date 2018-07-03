@@ -115,6 +115,20 @@ class HomeComponent extends Component {
       .then(results => this.setState({results}))
       .then(() => this.props.setStep(this.state.totalSteps, this.state.totalSteps, true))
   }
+
+  getAnsweredQuestions = () => {
+    const { selections } = this.props
+    const { questions } = this.state
+    let arr = []
+    if (selections.length > 0) {
+      selections.map((selection, index) => {
+        const question = questions.find(question => question.id === selection.questionId)
+        const answer = question.options.find(option => option.id === selection.optionId)
+        arr.push({ question: question, answer: answer.option })
+      })
+    }
+    return arr
+  }
   
   render() {
     const { step } = this.props
@@ -196,12 +210,7 @@ class HomeComponent extends Component {
 
         {this.props.location.pathname.split('/').indexOf('step') > -1 ? 
           <Status 
-            petName={this.props.petName} 
-            selections={this.props.selections}
-            questions={this.state.questions}
-            handleUpdatePetName={name => this.updatePetName(name)}
-            handleSelectionUpdate={(questionId, step, optionId) => this.updateAnswer(questionId, step, optionId)}
-            step={this.props.step}
+            answeredQuestions={this.getAnsweredQuestions()}
             /> : null}
 
 
