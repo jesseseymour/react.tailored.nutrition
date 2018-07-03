@@ -1,7 +1,12 @@
 import types from './types'
 
-const updatePetDetails = payload => ({
-  type: types.UPDATE_PET,
+const updatePetName = payload => ({
+  type: types.UPDATE_PETNAME,
+  payload: payload
+})
+
+const updatePetType = payload => ({
+  type: types.UPDATE_PETTYPE,
   payload: payload
 })
 
@@ -31,4 +36,4 @@ const reset = () => ({
   type: types.RESET
 })
 
-export default { updatePetDetails, nextStep, setStep, prevStep, updateSelection, reset }
+export default { updatePetType, updatePetName, nextStep, setStep, prevStep, updateSelection, reset }

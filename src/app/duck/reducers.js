@@ -3,10 +3,8 @@ import types from './types'
 
 const INITIAL_STATE_OBJECT = 
   {
-    petDetails: {
-      type: "",
-      name: ""
-    },
+    petName: "",
+    petType: "",
     selections: [],
     step: 1,
     completedStep: 0,
@@ -23,16 +21,11 @@ const INITIAL_STATE = (!localStorage["redux-store"])
 const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to utilize local storage
 // const appReducer = (state=INITIAL_STATE_OBJECT, action) => {
   switch (action.type){
-    case types.UPDATE_PET: {
-
-      if (action.payload != state.petDetails) {
-        return {
-          ...state,
-          petDetails: action.payload
-        } 
-      }else{
-        return state
-      }
+    case types.UPDATE_PETNAME: {
+      return action.payload !== state.petName ? {...state, petName: action.payload} : state
+    }
+    case types.UPDATE_PETTYPE: {
+      return action.payload !== state.petType ? { ...state, petType: action.payload } : state
     }
     case types.SET_STEP: {
       if(action.payload.complete){

@@ -27,7 +27,7 @@ class Status extends Component {
 
   
   render() {
-    const { selections, petName, handleUpdatePet, handleSelectionUpdate, questions, step } = this.props 
+    const { selections, petName, handleUpdatePetName, handleSelectionUpdate, questions, step } = this.props 
 
     const answeredQuestions = questions ? this.getAnsweredQuestions() : []
 
@@ -43,7 +43,7 @@ class Status extends Component {
             autoFocus
             required
             value={petName}
-            onChange={e => handleUpdatePet(e.target.value)}
+            onChange={e => handleUpdatePetName(e.target.value)}
             onBlur={() => this.setState({ editPetName: false })}
             onFocus={e => e.target.select()} />
           <span 

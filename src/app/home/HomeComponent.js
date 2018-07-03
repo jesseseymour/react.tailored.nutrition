@@ -73,6 +73,11 @@ class HomeComponent extends Component {
     this.props.updatePetDetails({ name, type })
   }
 
+  updatePetName = name => {
+    this.setAdvanceState()
+    this.props.updatePetName(name)
+  }
+
   updateAnswer = ({questionId, questionStep, optionId, updateFn = this.props.updateSelection}) => {
     updateFn(questionId, questionStep, optionId)
       .then(() => this.setAdvanceState())
@@ -81,7 +86,7 @@ class HomeComponent extends Component {
   isAppReadyToAdvance = () => {
     let advance = false
     if (this.props.step === 1){
-      this.props.petDetails.name ? advance = true : null
+      this.props.petName ? advance = true : null
      }else{
        hasQuestionBeenAnswered(this.props.step, this.props.selections) ? advance = true : null
      }
@@ -145,8 +150,8 @@ class HomeComponent extends Component {
                       <PetDetails
                         {...props}
                         step={step}
-                        petDetails={this.props.petDetails}
-                        handleUpdatePetDetails={this.updatePetDetails}
+                        petDetails={{name:this.props.petName,type:this.props.petType}}
+                        handleUpdatePetName={this.updatePetName}
                         styles={styles.content} />
                   } />
                 <Route
@@ -156,7 +161,7 @@ class HomeComponent extends Component {
                     props =>
                       <Question
                         {...props}
-                        petName={this.props.petDetails.name}
+                        petName={this.props.petName}
                         step={step}
                         selection={null}
                         questions={this.state.questions ? this.state.questions : null}
@@ -191,10 +196,10 @@ class HomeComponent extends Component {
 
         {this.props.location.pathname.split('/').indexOf('step') > -1 ? 
           <Status 
-            petName={this.props.petDetails.name} 
+            petName={this.props.petName} 
             selections={this.props.selections}
             questions={this.state.questions}
-            handleUpdatePet={name => this.updatePetDetails(name)}
+            handleUpdatePetName={name => this.updatePetName(name)}
             handleSelectionUpdate={(questionId, step, optionId) => this.updateAnswer(questionId, step, optionId)}
             step={this.props.step}
             /> : null}

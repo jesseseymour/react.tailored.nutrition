@@ -4,15 +4,20 @@ import { appOperations } from '../duck'
 import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = state => {
-  const { petDetails, step, selections, completedStep } = state.app
-  return { petDetails, step, selections, completedStep }
+  const { petType, petName, step, selections, completedStep } = state.app
+  return { petType, petName, step, selections, completedStep }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    updatePetDetails(payload) {
+    updatePetType(type) {
       dispatch(
-        appOperations.updatePetDetails(payload)
+        appOperations.updatePetType(type)
+      )
+    },
+    updatePetName(name) {
+      dispatch(
+        appOperations.updatePetName(name)
       )
     },
     setStep(step, totalSteps, complete=false) {
