@@ -6,6 +6,14 @@ import PetDetails from './PetDetailsComponent'
 import Question from './QuestionComponent'
 import Status from './StatusComponent'
 import Results from './ResultsComponent'
+import { 
+  fetchWithTimeout, 
+  handleErrors, 
+  getStepFromPathname, 
+  redirectToStep,
+  hasQuestionBeenAnswered,
+  resetApp
+} from '../utils'
 
 class HomeComponent extends Component {
   constructor(props) {
@@ -20,13 +28,13 @@ class HomeComponent extends Component {
   }
 
   componentDidMount = () => {
-    this.fetchWithTimeout(1000,
+    fetchWithTimeout(10000,
     fetch('/api/survey/index?survey=dog', {
       headers: {
         'content-type': 'text/xml'
       }
     }))
-    .then(this.handleErrors)
+    .then(handleErrors)
     .then(results => results.json())
     .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length, loading: false}))
     .then(() => this.checkPath())
@@ -36,22 +44,15 @@ class HomeComponent extends Component {
   }
 
   componentDidUpdate = () => {
-    const stepFromPathname = this.getStepFromPathname()
+    const stepFromPathname = getStepFromPathname(this.props.location.pathname)
     stepFromPathname !== this.props.step && stepFromPathname <= this.state.totalSteps && stepFromPathname >= 1 ? (
       this.props.setStep(stepFromPathname, this.state.totalSteps)
         .then(this.setState({advance:false}))
        ) : null
   }
 
-  handleErrors(response) {
-    if (!response.ok) {
-      throw Error(response.statusText)
-    }
-    return response
-  }
-
   checkPath = () => {
-    const stepFromPathname = this.getStepFromPathname()
+    const stepFromPathname = getStepFromPathname(this.props.location.pathname)
     const {completedStep} = this.props
     const {totalSteps} = this.state
 
@@ -62,54 +63,34 @@ class HomeComponent extends Component {
       stepFromPathname < 1 ||
       this.props.location.pathname.includes('results')
     ){
-        return completedStep === totalSteps ? this.submitAnswers() : this.redirectToStep(completedStep + 1)
+        return completedStep === totalSteps ? this.submitAnswers() : redirectToStep(this.props.history, completedStep + 1)
     }
     return
   }
 
-  getStepFromPathname = () => {
-    const pathnameArr = this.props.location.pathname.split('/')
-    return parseInt(pathnameArr[pathnameArr.indexOf('step') + 1])
-  }
-
-  redirectToStep = step => {
-    this.props.history.push(`/step/${step}`)
-  }
-
   updatePetDetails = (name, type="") => {
-    this.readyToAdvance()
+    this.setAdvanceState()
     this.props.updatePetDetails({ name, type })
   }
 
   updateAnswer = ({questionId, questionStep, optionId, updateFn = this.props.updateSelection}) => {
     updateFn(questionId, questionStep, optionId)
-      .then(() => this.readyToAdvance())
+      .then(() => this.setAdvanceState())
   }
-
-  hasQuestionBeenAnswered = (step) => this.props.selections.findIndex(selection => selection.step === step) > -1
 
   isAppReadyToAdvance = () => {
     let advance = false
-
-    switch (this.props.step) {
-      case 1 : {
-        this.props.petDetails.name ? advance = true : null
-      }
-      default: {
-        this.hasQuestionBeenAnswered(this.props.step) ? advance = true : null
-      }
-    }
+    if (this.props.step === 1){
+      this.props.petDetails.name ? advance = true : null
+     }else{
+       hasQuestionBeenAnswered(this.props.step, this.props.selections) ? advance = true : null
+     }
 
     return advance
   }
 
-  readyToAdvance = () => {
+  setAdvanceState = () => {
     this.setState({advance: true})
-  }
-
-  resetApp = () => {
-    //reset redux state after updating history
-    Promise.resolve(this.props.history.push('/step/1')).then(this.props.reset())
   }
 
   submitAnswers = () => {
@@ -128,15 +109,6 @@ class HomeComponent extends Component {
       .then(results => results.json())
       .then(results => this.setState({results}))
       .then(() => this.props.setStep(this.state.totalSteps, this.state.totalSteps, true))
-  }
-
-  fetchWithTimeout(ms, promise) {
-    return new Promise(function(resolve, reject) {
-      setTimeout(function() {
-        reject(new Error("timeout"))
-      }, ms)
-      promise.then(resolve, reject)
-    })
   }
   
   render() {
@@ -189,7 +161,7 @@ class HomeComponent extends Component {
                         selection={null}
                         questions={this.state.questions ? this.state.questions : null}
                         handleSubmit={this.updateAnswer}
-                        readyToAdvance={this.readyToAdvance}
+                        readyToAdvance={this.setAdvanceState}
                         styles={styles.content} />
                   } />
                 <Route
@@ -228,7 +200,7 @@ class HomeComponent extends Component {
             /> : null}
 
 
-        <p onClick={() => this.resetApp()}>start over</p>
+          <p onClick={() => resetApp(this.props.history, this.props.reset(), '/step/1')}>start over</p>
       </div> :
       <div>
         <div className="loading">App is loading</div>
