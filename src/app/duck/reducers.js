@@ -3,7 +3,6 @@ import types from './types'
 
 const INITIAL_STATE_OBJECT = 
   {
-    myBool: false,
     petDetails: {
       type: "",
       name: ""
@@ -24,12 +23,6 @@ const INITIAL_STATE = (!localStorage["redux-store"])
 const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to utilize local storage
 // const appReducer = (state=INITIAL_STATE_OBJECT, action) => {
   switch (action.type){
-    case types.TOGGLE_BOOL: {
-      return {
-        ...state,
-        myBool: !state.myBool
-      }
-    }
     case types.UPDATE_PET: {
 
       if (action.payload != state.petDetails) {

@@ -1,10 +1,5 @@
 import types from './types'
 
-const toggleMyBool = (value) => ({
-  type: types.TOGGLE_BOOL,
-  value: value
-})
-
 const updatePetDetails = payload => ({
   type: types.UPDATE_PET,
   payload: payload
@@ -36,4 +31,4 @@ const reset = () => ({
   type: types.RESET
 })
 
-export default { toggleMyBool, updatePetDetails, nextStep, setStep, prevStep, updateSelection, reset }
+export default { updatePetDetails, nextStep, setStep, prevStep, updateSelection, reset }

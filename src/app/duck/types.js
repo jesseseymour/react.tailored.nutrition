@@ -1,4 +1,3 @@
-const TOGGLE_BOOL = 'TOGGLE_BOOL'
 const UPDATE_PET = 'UPDATE_PET'
 const SET_STEP = 'SET_STEP'
 const NEXT_STEP = 'NEXT_STEP'
@@ -7,7 +6,6 @@ const UPDATE_SELECTION = 'UPDATE_SELECTION'
 const RESET = 'RESET'
 
 export default {
-  TOGGLE_BOOL,
   UPDATE_PET,
   SET_STEP,
   NEXT_STEP, 
