@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import Home from './home/HomeContainer'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+  }
   render() {
     return(
-      <Router>
-        <Route 
-          render={({ location }) => (
-            <Home />
-          )}
-        />
+      <Router key={Math.random()}>
+        <Home />
       </Router>
     )
   }
