@@ -178,7 +178,7 @@ class HomeComponent extends Component {
                         {...props}
                         petName={this.props.petName}
                         step={step}
-                        selection={null}
+                        selections={this.props.selections}
                         questions={this.state.questions ? this.state.questions : null}
                         handleSubmit={this.updateAnswer}
                         readyToAdvance={this.setAdvanceState}
