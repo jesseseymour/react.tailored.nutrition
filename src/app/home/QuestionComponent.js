@@ -12,39 +12,59 @@ class Question extends Component {
     return nextProps.step !== parseInt(nextProps.match.params.id) ? {selection: null} : null
   }
 
- 
+  
 
   setSelection(index){
     this.setState({selection:index})
   }
 
-  render() {
-    //loop through questions and return the question with the right step id
+  renderQuestions = () => {
     const questionStep = parseInt(this.props.match.params.id)
     const question = this.props.questions ? this.props.questions.find(question => question.step === questionStep) : null
-    const { selections } = this.props
-    return (
-      <div style={this.props.styles}>
-        {
-          question ? (
-            <div>
-              {question.question.replace('${petname}', this.props.petName ? this.props.petName : 'your pet')}
-              {question.options.map((option, index) =>
-                <div style={{display: 'inline-block', cursor: 'pointer'}} key={index} onClick={() => this.props.handleSubmit({questionId:question.id, questionStep:question.step, optionId:option.id})}>
-                  {selections.findIndex(selection => selection.optionId === option.id) > -1 ? (
-                    <span className="active"><svg width="100" height="100" preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${option.image}-active`} /></svg></span>
-                  ):(
-                    <span className="inactive"><svg width="100" height="100" preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${option.image}`} /></svg></span>
-                  )}
-                  
-                  
-                  <div>{option.option}</div>
-                </div>
-              )}
-            </div>
-          ) : null
+    const { selections, updateAnswer, petName } = this.props
+
+    function isAnswerActive(option){
+      for (let i = 0; i < selections.length; i++){
+        if (selections[i].questionId === question.id && selections[i].optionId.indexOf(option.id) > -1) {
+          return true
         }
+      }
+      return false
+    }
+
+    return question ? (
+      <div>
+        <span style={{fontWeight: 'bold'}}>{question.question.replace('${petname}', petName ? petName : 'your pet')}&nbsp;</span>
+        {question.options.map((option,index) => {
+          return (
+            <div key={index}
+                  style={{display: 'inline-block', cursor: 'pointer'}}  
+                  onClick={() => 
+                    updateAnswer(
+                      {
+                        questionId:question.id, 
+                        questionStep:question.step, 
+                        optionId:option.id, 
+                        multipleChoice:question.multipleChoice,
+                        isExclusive: option.isExclusive
+                      }
+                    )
+                  }
+            >
+              {option.option}
+              <span><svg width="100" height="100" preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${option.image}${isAnswerActive(option) ? '-active' : ''}`} /></svg></span>
+            </div>
+          )
+        })}
       </div>
+    ) : null
+  }
+
+  render() {
+    //loop through questions and return the question with the right step id
+    const { styles } = this.props
+    return (
+      <div style={styles}>{this.renderQuestions()}</div>
     )
   }
 }
