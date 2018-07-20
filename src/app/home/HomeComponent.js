@@ -124,7 +124,7 @@ class HomeComponent extends Component {
   }
 
   fetchResults = () => {
-    const optionsStr = `[${this.props.selections.map(option => `"${option.optionId}"`)}]`
+    const optionsStr = `[${this.props.selections.map(option => `[${option.optionId.map(id => `"${id}"`)}]`)}]`
     fetch(`/api/survey/recommendation?options=${optionsStr}`, {
       headers: {
         'content-type': 'text/xml'
