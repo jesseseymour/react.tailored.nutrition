@@ -30,11 +30,12 @@ class HomeComponent extends Component {
 
   componentDidMount = () => {
     fetchWithTimeout(10000,
-    fetch('/api/survey/index?survey=dog', {
-      headers: {
-        'content-type': 'text/xml'
-      }
-    }))
+    // fetch('/api/survey/index?survey=dog', {
+    //   headers: {
+    //     'content-type': 'text/xml'
+    //   }
+    // }))
+    fetch('./data/questions.json'))
     .then(handleErrors)
     .then(results => results.json())
     .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length, loading: false}))
@@ -79,9 +80,27 @@ class HomeComponent extends Component {
     this.props.updatePetName(name)
   }
 
-  updateAnswer = ({questionId, questionStep, optionId, updateFn = this.props.updateSelection}) => {
-    updateFn(questionId, questionStep, optionId)
-      .then(() => this.setAdvanceState())
+  updateAnswer = (params, updateFn = this.props.updateSelection) => {
+    const {questionId, questionStep, optionId, isExclusive, exclusiveOptions} = params
+    let options = [optionId]
+    if(!isExclusive){
+      let currentSelections = this.props.selections.find(item => item.questionId === questionId)
+      
+      if (currentSelections){
+        let currentOptions = currentSelections.optionId.filter(
+          function(option){
+            return exclusiveOptions.findIndex(exclusiveOption => exclusiveOption.id === option) === -1
+          }
+        )
+        for (let i = 0; i < currentOptions.length; i++){
+          let index = exclusiveOptions.findIndex(exclusiveOption => exclusiveOption.id === currentOptions[i])
+        }
+        currentOptions.indexOf(optionId) > -1 ? currentOptions.splice(currentOptions.indexOf(optionId),1) : currentOptions.push(optionId)
+        options = currentOptions
+      }
+    }
+    updateFn(questionId, questionStep, options)
+      .then(() => this.isAppReadyToAdvance() ? this.setAdvanceState() : this.setAdvanceState(false))
   }
 
   isAppReadyToAdvance = () => {
@@ -95,8 +114,8 @@ class HomeComponent extends Component {
     return advance
   }
 
-  setAdvanceState = () => {
-    this.setState({advance: true})
+  setAdvanceState = (advance = true) => {
+    this.setState({advance: advance})
   }
 
   submitAnswers = () => {
@@ -120,15 +139,19 @@ class HomeComponent extends Component {
   getAnsweredQuestions = () => {
     const { selections } = this.props
     const { questions } = this.state
-    let arr = []
+    let answerArr = []
+
     if (selections.length > 0) {
       selections.map((selection, index) => {
         const question = questions.find(question => question.id === selection.questionId)
-        const answer = question.options.find(option => option.id === selection.optionId)
-        arr.push({ question: question, answer: answer.option })
+        
+        const answers = selection.optionId.map(selection => {
+          const answer = question.options.find(option => option.id === selection)
+          answerArr.push(answer.option)
+        })
       })
     }
-    return arr
+    return answerArr
   }
   
   render() {
@@ -180,7 +203,7 @@ class HomeComponent extends Component {
                         step={step}
                         selections={this.props.selections}
                         questions={this.state.questions ? this.state.questions : null}
-                        handleSubmit={this.updateAnswer}
+                        updateAnswer={this.updateAnswer}
                         readyToAdvance={this.setAdvanceState}
                         styles={styles.content} />
                   } />

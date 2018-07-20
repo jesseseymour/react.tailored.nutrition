@@ -42,6 +42,7 @@ class Question extends Component {
                   onClick={() => 
                     updateAnswer(
                       {
+                        exclusiveOptions: question.options.filter(option => option.isExclusive),
                         questionId:question.id, 
                         questionStep:question.step, 
                         optionId:option.id, 

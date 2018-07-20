@@ -1,5 +1,9 @@
 function hasQuestionBeenAnswered(step,selections){
-  return selections.findIndex(selection => selection.step === step) > -1
+  let index = selections.findIndex(selection => selection.step === step)
+  if (index > -1 && selections[index].optionId.length > 0){
+    return true
+  }
+  return false
 }
 
 export default hasQuestionBeenAnswered

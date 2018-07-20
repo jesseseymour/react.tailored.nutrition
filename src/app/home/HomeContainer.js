@@ -38,9 +38,9 @@ const mapDispatchToProps = dispatch => {
       )
       //return Promise.resolve()
     },
-    updateSelection(questionIndex,questionStep,optionIndex) {
+    updateSelection(questionId,questionStep,optionId,multipleChoice,isExclusive) {
       dispatch(
-        appOperations.updateSelection(questionIndex,questionStep,optionIndex)
+        appOperations.updateSelection(questionId,questionStep,optionId,multipleChoice,isExclusive)
       )
       return Promise.resolve()
     },
