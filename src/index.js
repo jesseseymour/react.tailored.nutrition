@@ -11,12 +11,15 @@ const middleware = applyMiddleware(thunk)
 
 const saveState = () => localStorage['redux-store'] = JSON.stringify(store.getState())
 
-const store = createStore(
+const store = process.env.NODE_ENV !== 'production' ? createStore(
   rootReducer, 
   compose(
     middleware, 
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
+) : createStore(
+  rootReducer,
+  compose(middleware)
 )
 store.subscribe(saveState)
 
