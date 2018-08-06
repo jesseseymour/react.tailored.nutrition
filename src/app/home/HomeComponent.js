@@ -30,12 +30,12 @@ class HomeComponent extends Component {
 
   componentDidMount = () => {
     fetchWithTimeout(10000,
-    // fetch('/api/survey/index?survey=dog', {
-    //   headers: {
-    //     'content-type': 'text/xml'
-    //   }
-    // }))
-    fetch('./data/questions.json'))
+    fetch('/api/survey/index?survey=dog', {
+      headers: {
+        'content-type': 'text/xml'
+      }
+    }))
+    //fetch('./data/questions.json'))
     .then(handleErrors)
     .then(results => results.json())
     .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length, loading: false}))
