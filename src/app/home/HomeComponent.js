@@ -70,6 +70,16 @@ class HomeComponent extends Component {
     return
   }
 
+  nextStep = (e) => {
+    e.preventDefault()
+    this.props.step === this.state.totalSteps ? this.props.history.push('/results') : this.props.history.push(`/step/${this.props.step + 1}`)
+  }
+
+  prevStep = (e) => {
+    e.preventDefault()
+    this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/step/${this.props.step}`) : this.props.history.push(`/step/${this.props.step - 1}`)
+  } 
+
   updatePetDetails = (name, type="") => {
     this.setAdvanceState()
     this.props.updatePetDetails({ name, type })
@@ -170,7 +180,7 @@ class HomeComponent extends Component {
 
     styles.container ={
       position: "relative",
-      height: "300px"
+      height: "600px"
     }
     return (
       !this.state.loading ?
@@ -227,8 +237,8 @@ class HomeComponent extends Component {
           prev={step > 1}
           results={step === totalSteps && this.props.location.pathname.split('/').indexOf('step') > -1}
           isReadyToAdvance={this.isAppReadyToAdvance() ? true : this.state.advance}
-          nextStep={() => this.props.step === this.state.totalSteps ? this.props.history.push('/results') : this.props.history.push(`/step/${this.props.step + 1}`)}
-          prevStep={() => this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/step/${this.props.step}`) : this.props.history.push(`/step/${this.props.step - 1}`)} 
+          nextStep={(e) => this.nextStep(e)}
+          prevStep={(e) => this.prevStep(e)}
           getResults={() => this.submitAnswers()} />
 
         <ProgressBar 

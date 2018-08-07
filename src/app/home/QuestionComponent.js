@@ -34,29 +34,33 @@ class Question extends Component {
 
     return question ? (
       <div>
-        <span style={{fontWeight: 'bold'}}>{question.question.replace('${petname}', petName ? petName : 'your pet')}&nbsp;</span>
-        {question.options.map((option,index) => {
-          return (
-            <div key={index}
-                  style={{display: 'inline-block', cursor: 'pointer'}}  
-                  onClick={() => 
-                    updateAnswer(
-                      {
-                        exclusiveOptions: question.options.filter(option => option.isExclusive),
-                        questionId:question.id, 
-                        questionStep:question.step, 
-                        optionId:option.id, 
-                        multipleChoice:question.multipleChoice,
-                        isExclusive: option.isExclusive
-                      }
-                    )
-                  }
-            >
-              {option.option}
-              <span><svg width="100" height="100" preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${option.image}${isAnswerActive(option) ? '-active' : ''}`} /></svg></span>
-            </div>
-          )
-        })}
+        <div className='tntool__banner tntool__banner--question'>{question.question.replace('${petname}', petName ? petName : 'your pet')}&nbsp;</div>
+        <div className='tntool__options'>
+          {question.options.map((option,index) => {
+            return (
+              <div key={index}
+                className={`tntool__option tntool__option--${question.options.length} ${isAnswerActive(option) ? 'active' : 'inactive'}`}
+                    onClick={() => 
+                      updateAnswer(
+                        {
+                          exclusiveOptions: question.options.filter(option => option.isExclusive),
+                          questionId:question.id, 
+                          questionStep:question.step, 
+                          optionId:option.id, 
+                          multipleChoice:question.multipleChoice,
+                          isExclusive: option.isExclusive
+                        }
+                      )
+                    }
+              >
+                <span><svg width="100" height="100" className={option.option.trim().replace(' ','-').toLowerCase()} preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${option.image}${isAnswerActive(option) ? '-active' : ''}`} /></svg></span>
+                <div>{option.option}</div>
+                {option.subtext ? <div className='subtext'>{option.subtext}</div> : null}
+                
+              </div>
+            )
+          })}
+        </div>
       </div>
     ) : null
   }
