@@ -13,7 +13,9 @@ import {
   getStepFromPathname, 
   redirectToStep,
   hasQuestionBeenAnswered,
-  resetApp
+  resetApp,
+  priceSpiderRebind,
+  scrollTo
 } from '../utils'
 
 class HomeComponent extends Component {
@@ -47,6 +49,8 @@ class HomeComponent extends Component {
 
   componentDidUpdate = () => {
     const stepFromPathname = getStepFromPathname(this.props.location.pathname)
+    priceSpiderRebind()
+    this.updateScrollPosition()
     stepFromPathname !== this.props.step && stepFromPathname <= this.state.totalSteps && stepFromPathname >= 1 ? (
       this.props.setStep(stepFromPathname, this.state.totalSteps)
         .then(this.setState({advance:false}))
@@ -79,6 +83,12 @@ class HomeComponent extends Component {
     e.preventDefault()
     this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/step/${this.props.step}`) : this.props.history.push(`/step/${this.props.step - 1}`)
   } 
+
+  updateScrollPosition = () => {
+    const stepFromPathname = getStepFromPathname(this.props.location.pathname)
+    const element = stepFromPathname === 1 ? ".tntool__banner--finder" : ".tntool__banner--results, .tntool__banner--question"
+    scrollTo(element, 1000)
+  }
 
   updatePetDetails = (name, type="") => {
     this.setAdvanceState()
@@ -167,8 +177,20 @@ class HomeComponent extends Component {
   render() {
     const { step } = this.props
     const { totalSteps } = this.state
-    const styles = {};
-
+    const styles = {}
+    const stepFromPathname = getStepFromPathname(this.props.location.pathname)
+    let height = "0px"
+    switch (step) {
+      case 1 :
+        height = "250px"
+        break
+      case 2 : 
+        height = "450px"
+        break
+      default:
+        height = "1000px"
+        break
+    }
     styles.content = {
       position: "absolute",
       background: "white",
@@ -178,14 +200,14 @@ class HomeComponent extends Component {
       bottom: 0
     };
 
-    styles.container ={
+    styles.container = {
       position: "relative",
-      height: "600px"
+      height: height
     }
     return (
       !this.state.loading ?
       <div>
-        <div style={styles.container}>
+          <div className='tntool__container' data-step={Number.isInteger(stepFromPathname) ? stepFromPathname : "results"}>
           <Route exact path='/' render={() => <Redirect to='/step/1' />} />
           <TransitionGroup>
             <CSSTransition key={this.props.location.key} classNames='fade' timeout={300}>
@@ -200,7 +222,8 @@ class HomeComponent extends Component {
                         step={step}
                         petDetails={{name:this.props.petName,type:this.props.petType}}
                         handleUpdatePetName={this.updatePetName}
-                        styles={styles.content} />
+                        styles={styles.content}
+                        scrollTo={scrollTo} />
                   } />
                 <Route
                   exact
@@ -225,6 +248,8 @@ class HomeComponent extends Component {
                         {...props}
                         styles={styles.content}
                         results={this.state.results}
+                        petName={this.props.petName}
+                        resetApp={() => resetApp(this.props.history, this.props.reset(), '/step/1')}
                         />
                   }
                 />
@@ -252,7 +277,6 @@ class HomeComponent extends Component {
             /> : null}
 
 
-          <p style={{'cursor':'pointer'}} onClick={() => resetApp(this.props.history, this.props.reset(), '/step/1')}>start over</p>
       </div> :
       <div>
         <div className="loading">App is loading</div>
