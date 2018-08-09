@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ProgressBar = ({ step, totalSteps, render }) => {
+const ProgressBar = ({ step, totalSteps, render, petType="dog" }) => {
   const left = (step - 1) / totalSteps * 100 + "%"
   const barStyle = {
     height: '1px',
@@ -41,7 +41,7 @@ const ProgressBar = ({ step, totalSteps, render }) => {
         <svg width="30" height="30" preserveAspectRatio="xMidYMax meet"><use xlinkHref="#paw"></use></svg>
         <div style={stepStyle}>{step}</div>
       </div>
-      <div style={bowlStyle} className="tntool__bowl tntool__bowl--nolines tntool__bowl--grey"><svg width="50" height="30" preserveAspectRatio="xMidYMax meet"><use xlinkHref="#dog-food-bowl"></use></svg></div>
+      <div style={bowlStyle} className="tntool__bowl tntool__bowl--nolines tntool__bowl--grey"><svg width="50" height="30" preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${petType}-food-bowl-nolines`}></use></svg></div>
     </div > : null
   )
 }

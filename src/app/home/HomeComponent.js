@@ -271,7 +271,8 @@ class HomeComponent extends Component {
         <ProgressBar 
           step={step} 
           totalSteps={totalSteps}
-          render={this.props.location.pathname.split('/').indexOf('step') > -1} />
+          render={this.props.location.pathname.split('/').indexOf('step') > -1} 
+          petType={this.props.rootData.petType}/>
 
         {this.props.location.pathname.split('/').indexOf('step') > -1 ? 
           <AnsweredQuestions 

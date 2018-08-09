@@ -53,10 +53,11 @@ class Question extends Component {
                       )
                     }
               >
-                <span><svg width="100" height="100" className={option.option.trim().replace(' ','-').toLowerCase()} preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${option.image}${isAnswerActive(option) ? '-active' : ''}`} /></svg></span>
-                <div>{option.option}</div>
-                {option.subtext ? <div className='subtext'>{option.subtext}</div> : null}
-                
+                <div className="tntool__optioninner">
+                  <span><svg width="100" height="100" className={option.option.trim().replace(/ /g,'-').toLowerCase()} preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${option.image}${isAnswerActive(option) ? '-active' : ''}`} /></svg></span>
+                  <div>{option.option}</div>
+                  {option.subtext ? <div className='subtext'>{option.subtext}</div> : null}
+                </div>
               </div>
             )
           })}

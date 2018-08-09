@@ -5,7 +5,7 @@ module.exports = {
 	entry: "./src/index.js",
 	output: {
 		path: path.resolve(__dirname, "dist/assets"),
-		filename: "bundle.js",
+		filename: "tailorednutrition.min.js",
 		publicPath: "/assets/"
 	},
 	module: {
