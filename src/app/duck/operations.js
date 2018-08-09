@@ -1,6 +1,5 @@
 import actions from './actions'
 
-const updatePetType = actions.updatePetType
 const updatePetName = actions.updatePetName
 const setStep = actions.setStep
 const nextStep = actions.nextStep
@@ -9,7 +8,6 @@ const updateSelection = actions.updateSelection
 const reset = actions.reset
 
 export default {
-  updatePetType,
   updatePetName,
   setStep,
   nextStep,

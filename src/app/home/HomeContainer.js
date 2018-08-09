@@ -3,50 +3,47 @@ import HomeComponent from './HomeComponent'
 import { appOperations } from '../duck'
 import { withRouter } from 'react-router-dom'
 
-const mapStateToProps = state => {
-  const { petType, petName, step, selections, completedStep } = state.app
-  return { petType, petName, step, selections, completedStep }
+const mapStateToProps = (state, ownProps) => {
+  const petType = ownProps.petType
+  const { petName, step, selections, completedStep } = state.app[petType]
+  return { petName, step, selections, completedStep }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const petType = ownProps.petType
   return {
-    updatePetType(type) {
-      dispatch(
-        appOperations.updatePetType(type)
-      )
-    },
     updatePetName(name) {
       dispatch(
-        appOperations.updatePetName(name)
+        appOperations.updatePetName(name, petType)
       )
     },
     setStep(step, totalSteps, complete=false) {
       dispatch(
-        appOperations.setStep(step, totalSteps, complete)
+        appOperations.setStep(step, totalSteps, complete, petType)
       )
       return Promise.resolve()
     },
     nextStep() {
       dispatch(
-        appOperations.nextStep()
+        appOperations.nextStep(petType)
       )
       //return Promise.resolve()
     }, 
     prevStep() {
       dispatch(
-        appOperations.prevStep()
+        appOperations.prevStep(petType)
       )
       //return Promise.resolve()
     },
-    updateSelection(questionId,questionStep,optionId,multipleChoice,isExclusive) {
+    updateSelection(questionId,questionStep,optionId) {
       dispatch(
-        appOperations.updateSelection(questionId,questionStep,optionId,multipleChoice,isExclusive)
+        appOperations.updateSelection(questionId, questionStep, optionId, petType)
       )
       return Promise.resolve()
     },
     reset(){
       dispatch(
-        appOperations.reset()
+        appOperations.reset(petType)
       )
       return Promise.resolve()
     }

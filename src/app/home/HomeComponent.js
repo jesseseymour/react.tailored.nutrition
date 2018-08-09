@@ -32,7 +32,7 @@ class HomeComponent extends Component {
 
   componentDidMount = () => {
     fetchWithTimeout(10000,
-    fetch(`/api/survey/index?survey=${this.props.rootData.petType}`, {
+    fetch(`/api/survey/index?survey=${this.props.petType}`, {
       headers: {
         'content-type': 'text/xml'
       }
@@ -69,19 +69,19 @@ class HomeComponent extends Component {
       stepFromPathname < 1 ||
       this.props.location.pathname.includes('results')
     ){
-      return completedStep === totalSteps ? this.submitAnswers() : redirectToStep(this.props.history, completedStep + 1, this.props.rootData.baseUrl)
+      return completedStep === totalSteps ? this.submitAnswers() : redirectToStep(this.props.history, completedStep + 1, this.props.baseUrl)
     }
     return
   }
 
   nextStep = (e) => {
     e.preventDefault()
-    this.props.step === this.state.totalSteps ? this.props.history.push(`/${this.props.rootData.baseUrl}/results`) : this.props.history.push(`/${this.props.rootData.baseUrl}/step/${this.props.step + 1}`)
+    this.props.step === this.state.totalSteps ? this.props.history.push(`/${this.props.baseUrl}/results`) : this.props.history.push(`/${this.props.baseUrl}/step/${this.props.step + 1}`)
   }
 
   prevStep = (e) => {
     e.preventDefault()
-    this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/${this.props.rootData.baseUrl}/step/${this.props.step}`) : this.props.history.push(`/${this.props.rootData.baseUrl}/step/${this.props.step - 1}`)
+    this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/${this.props.baseUrl}/step/${this.props.step}`) : this.props.history.push(`/${this.props.baseUrl}/step/${this.props.step - 1}`)
   } 
 
   updateScrollPosition = () => {
@@ -139,7 +139,7 @@ class HomeComponent extends Component {
   }
 
   submitAnswers = () => {
-    Promise.resolve(this.props.history.push(`/${this.props.rootData.baseUrl}/results`))
+    Promise.resolve(this.props.history.push(`/${this.props.baseUrl}/results`))
       .then(this.fetchResults())
   }
 
@@ -208,19 +208,19 @@ class HomeComponent extends Component {
       !this.state.loading ?
       <div>
           <div className='tntool__container' data-step={Number.isInteger(stepFromPathname) ? stepFromPathname : "results"}>
-          <Route exact path='/' render={() => <Redirect to={`/${this.props.rootData.baseUrl}/step/1`} />} />
+          <Route exact path='/' render={() => <Redirect to={`/${this.props.baseUrl}/step/1`} />} />
           <TransitionGroup>
             <CSSTransition key={this.props.location.key} classNames='fade' timeout={300}>
               <Switch location={this.props.location}>
                 <Route
                   exact
-                  path={`/${this.props.rootData.baseUrl}/step/1`}
+                  path={`/${this.props.baseUrl}/step/1`}
                   render={
                     props =>
                       <PetDetails
                         {...props}
                         step={step}
-                        petType={this.props.rootData.petType}
+                        petType={this.props.petType}
                         petDetails={{name:this.props.petName}}
                         handleUpdatePetName={this.updatePetName}
                         styles={styles.content}
@@ -228,7 +228,7 @@ class HomeComponent extends Component {
                   } />
                 <Route
                   exact
-                    path={`/${this.props.rootData.baseUrl}/step/:id`}
+                    path={`/${this.props.baseUrl}/step/:id`}
                   render={
                     props =>
                       <Question
@@ -242,7 +242,7 @@ class HomeComponent extends Component {
                         styles={styles.content} />
                   } />
                 <Route
-                    path={`/${this.props.rootData.baseUrl}/results`}
+                    path={`/${this.props.baseUrl}/results`}
                   render={
                     props =>
                       <Results
@@ -250,8 +250,8 @@ class HomeComponent extends Component {
                         styles={styles.content}
                         results={this.state.results}
                         petName={this.props.petName}
-                        petType={this.props.rootData.petType}
-                        resetApp={() => resetApp(this.props.history, this.props.reset(), `/${this.props.rootData.baseUrl}/step/1`)}
+                        petType={this.props.petType}
+                        resetApp={() => resetApp(this.props.history, this.props.reset(), `/${this.props.baseUrl}/step/1`)}
                         />
                   }
                 />
@@ -272,7 +272,7 @@ class HomeComponent extends Component {
           step={step} 
           totalSteps={totalSteps}
           render={this.props.location.pathname.split('/').indexOf('step') > -1} 
-          petType={this.props.rootData.petType}/>
+          petType={this.props.petType}/>
 
         {this.props.location.pathname.split('/').indexOf('step') > -1 ? 
           <AnsweredQuestions 

@@ -1,17 +1,14 @@
 import types from './types'
 
-const updatePetName = payload => ({
+const updatePetName = (payload,petType) => ({
   type: types.UPDATE_PETNAME,
-  payload: payload
+  petType,
+  payload
 })
 
-const updatePetType = payload => ({
-  type: types.UPDATE_PETTYPE,
-  payload: payload
-})
-
-const setStep = (step, totalSteps, complete) => ({
+const setStep = (step, totalSteps, complete, petType) => ({
   type: types.SET_STEP,
+  petType,
   payload: {
     totalSteps,
     step,
@@ -19,21 +16,25 @@ const setStep = (step, totalSteps, complete) => ({
   }
 })
 
-const nextStep = () => ({
-  type: types.NEXT_STEP
+const nextStep = (petType) => ({
+  type: types.NEXT_STEP,
+  petType
 })
 
-const prevStep = () => ({
-  type: types.PREV_STEP
+const prevStep = (petType) => ({
+  type: types.PREV_STEP,
+  petType
 })
 
-const updateSelection = (questionId, questionStep, optionId) => ({
+const updateSelection = (questionId, questionStep, optionId, petType) => ({
   type: types.UPDATE_SELECTION,
+  petType,
   payload: { questionId: questionId, step: questionStep, optionId: optionId}
 })
 
-const reset = () => ({
-  type: types.RESET
+const reset = (petType) => ({
+  type: types.RESET,
+  petType
 })
 
-export default { updatePetType, updatePetName, nextStep, setStep, prevStep, updateSelection, reset }
+export default { updatePetName, nextStep, setStep, prevStep, updateSelection, reset }
