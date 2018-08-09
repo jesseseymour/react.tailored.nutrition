@@ -1,5 +1,5 @@
-function redirectToStep(history,step){
-  history.push(`/step/${step}`)
+function redirectToStep(history,step, baseUrl){
+  history.push(`/${baseUrl}/step/${step}`)
 }
 
 export default redirectToStep

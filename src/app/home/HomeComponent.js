@@ -32,7 +32,7 @@ class HomeComponent extends Component {
 
   componentDidMount = () => {
     fetchWithTimeout(10000,
-    fetch('/api/survey/index?survey=dog', {
+    fetch(`/api/survey/index?survey=${this.props.rootData.petType}`, {
       headers: {
         'content-type': 'text/xml'
       }
@@ -69,19 +69,19 @@ class HomeComponent extends Component {
       stepFromPathname < 1 ||
       this.props.location.pathname.includes('results')
     ){
-        return completedStep === totalSteps ? this.submitAnswers() : redirectToStep(this.props.history, completedStep + 1)
+      return completedStep === totalSteps ? this.submitAnswers() : redirectToStep(this.props.history, completedStep + 1, this.props.rootData.baseUrl)
     }
     return
   }
 
   nextStep = (e) => {
     e.preventDefault()
-    this.props.step === this.state.totalSteps ? this.props.history.push('/results') : this.props.history.push(`/step/${this.props.step + 1}`)
+    this.props.step === this.state.totalSteps ? this.props.history.push(`/${this.props.rootData.baseUrl}/results`) : this.props.history.push(`/${this.props.rootData.baseUrl}/step/${this.props.step + 1}`)
   }
 
   prevStep = (e) => {
     e.preventDefault()
-    this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/step/${this.props.step}`) : this.props.history.push(`/step/${this.props.step - 1}`)
+    this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/${this.props.rootData.baseUrl}/step/${this.props.step}`) : this.props.history.push(`/${this.props.rootData.baseUrl}/step/${this.props.step - 1}`)
   } 
 
   updateScrollPosition = () => {
@@ -139,7 +139,7 @@ class HomeComponent extends Component {
   }
 
   submitAnswers = () => {
-    Promise.resolve(this.props.history.push('/results'))
+    Promise.resolve(this.props.history.push(`/${this.props.rootData.baseUrl}/results`))
       .then(this.fetchResults())
   }
 
@@ -208,26 +208,27 @@ class HomeComponent extends Component {
       !this.state.loading ?
       <div>
           <div className='tntool__container' data-step={Number.isInteger(stepFromPathname) ? stepFromPathname : "results"}>
-          <Route exact path='/' render={() => <Redirect to='/step/1' />} />
+          <Route exact path='/' render={() => <Redirect to={`/${this.props.rootData.baseUrl}/step/1`} />} />
           <TransitionGroup>
             <CSSTransition key={this.props.location.key} classNames='fade' timeout={300}>
               <Switch location={this.props.location}>
                 <Route
                   exact
-                  path="/step/1"
+                  path={`/${this.props.rootData.baseUrl}/step/1`}
                   render={
                     props =>
                       <PetDetails
                         {...props}
                         step={step}
-                        petDetails={{name:this.props.petName,type:this.props.petType}}
+                        petType={this.props.rootData.petType}
+                        petDetails={{name:this.props.petName}}
                         handleUpdatePetName={this.updatePetName}
                         styles={styles.content}
                         scrollTo={scrollTo} />
                   } />
                 <Route
                   exact
-                  path="/step/:id"
+                    path={`/${this.props.rootData.baseUrl}/step/:id`}
                   render={
                     props =>
                       <Question
@@ -241,7 +242,7 @@ class HomeComponent extends Component {
                         styles={styles.content} />
                   } />
                 <Route
-                  path="/results"
+                    path={`/${this.props.rootData.baseUrl}/results`}
                   render={
                     props =>
                       <Results
@@ -249,7 +250,8 @@ class HomeComponent extends Component {
                         styles={styles.content}
                         results={this.state.results}
                         petName={this.props.petName}
-                        resetApp={() => resetApp(this.props.history, this.props.reset(), '/step/1')}
+                        petType={this.props.rootData.petType}
+                        resetApp={() => resetApp(this.props.history, this.props.reset(), `/${this.props.rootData.baseUrl}/step/1`)}
                         />
                   }
                 />

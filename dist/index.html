@@ -2429,7 +2429,7 @@ C0.8,15.8,0.6,15.8,0.5,15.8z"></path>
                         </div>
                     </div>
                 </div>
-                <div class="dog">
+                <div class="cat">
                     <div class="tntool">
                         <div class="tntool__banner tntool__banner--finder">
                             <h1>RECIPE FINDER</h1>
@@ -2439,6 +2439,12 @@ C0.8,15.8,0.6,15.8,0.5,15.8z"></path>
                             </svg>
                         </div>
                         <div id="react-container"></div>
+                        <script type="text/javascript">
+                            document.getElementById('react-container').setAttribute('data-root', JSON.stringify({
+                                'baseUrl': 'tailored-nutrition-cat',
+                                'petType': 'cat'
+                            }));
+                        </script>
                         <script type="text/javascript" src="/assets/bundle.js"></script>
                     </div>
                 </div>

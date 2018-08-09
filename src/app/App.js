@@ -7,9 +7,10 @@ class App extends Component {
     super(props)
   }
   render() {
+    var rootData = JSON.parse(document.getElementById('react-container').dataset.root);
     return(
       <Router key={Math.random()}>
-        <Home />
+        <Home rootData={rootData} />
       </Router>
     )
   }
