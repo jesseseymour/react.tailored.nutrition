@@ -3,9 +3,9 @@ import React from 'react'
 const Results = ({styles, results, petType = "dog", petName, resetApp}) => {
   const {product, ymal} = results ? results : {}
 
-  const getProduct = (product, key = 100) => {
+  const getProduct = (product) => {
     return(
-      <div key={key} className="tntool__product">
+      <div key={Math.floor(Math.random() * 1000)} className="tntool__product">
         <a href={product.link}>
           <img className="tntool__product--img" src={product.image} alt={product.alt} />
           <div className="tntool__product--line"></div>
@@ -38,7 +38,7 @@ const Results = ({styles, results, petType = "dog", petName, resetApp}) => {
                 Not what you expected?<span>Try these tailored recipes.</span>
               </div>
               {
-                ymal.map( (product, index) => getProduct(product, index) )
+                ymal.map( (product) => getProduct(product) )
               }
               <a className="tntool__viewall" href={`/${petType}-food`}>view all {petType} products</a>
             </div> :
