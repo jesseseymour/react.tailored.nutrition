@@ -179,38 +179,28 @@ class HomeComponent extends Component {
     const { totalSteps } = this.state
     const styles = {}
     const stepFromPathname = getStepFromPathname(this.props.location.pathname)
-    let height = "0px"
-    switch (step) {
-      case 1 :
-        height = "250px"
-        break
-      case 2 : 
-        height = "450px"
-        break
-      default:
-        height = "1000px"
-        break
-    }
+    
     styles.content = {
-      position: "absolute",
-      background: "white",
-      left: 0,
-      right: 0,
-      top: "0",
-      bottom: 0
+      //position: "absolute",
+      //background: "white",
+      // left: 0,
+      // right: 0,
+      // top: "0",
+      // bottom: 0
     };
 
     styles.container = {
-      position: "relative",
-      height: height
+      //position: "relative",
+      minHeight: "300px"
+      //height: height
     }
     return (
       !this.state.loading ?
       <div>
           <div className='tntool__container' data-step={Number.isInteger(stepFromPathname) ? stepFromPathname : "results"}>
           <Route exact path='/' render={() => <Redirect to={`/${this.props.baseUrl}/step/1`} />} />
-          <TransitionGroup>
-            <CSSTransition key={this.props.location.key} classNames='fade' timeout={300}>
+          {/* <TransitionGroup>
+            <CSSTransition key={this.props.location.key} classNames='fade' timeout={300}> */}
               <Switch location={this.props.location}>
                 <Route
                   exact
@@ -256,8 +246,8 @@ class HomeComponent extends Component {
                   }
                 />
               </Switch>
-            </CSSTransition>
-          </TransitionGroup>
+            {/* </CSSTransition>
+          </TransitionGroup> */}
         </div>
         <StepSelector 
           next={step < totalSteps}
