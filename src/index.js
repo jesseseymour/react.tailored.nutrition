@@ -15,7 +15,7 @@ const store = process.env.NODE_ENV !== 'production' ? createStore(
   rootReducer, 
   compose(
     middleware, 
-   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+   //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() //uncomment if you wish to use the Redux devtools browser extension
   )
 ) : createStore(
   rootReducer,
