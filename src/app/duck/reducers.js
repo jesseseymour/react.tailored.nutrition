@@ -50,7 +50,7 @@ const appReducer = (state = INITIAL_STATE, action) => { //uncomment this line to
           }
         }
       }
-      if (action.payload.step > state.completedStep) {
+      if (action.payload.step > state[action.petType].completedStep) {
         return {
           ...state,
           [action.petType]: {
