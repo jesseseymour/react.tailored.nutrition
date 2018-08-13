@@ -47,10 +47,13 @@ class HomeComponent extends Component {
     })
   }
 
-  componentDidUpdate = () => {
+  componentDidUpdate = (prevProps) => {
     const stepFromPathname = getStepFromPathname(this.props.location.pathname)
-    priceSpiderRebind()
-    this.updateScrollPosition()
+    this.props.location.pathname.includes('results') && this.props.location.pathname !== prevProps.location.pathname ? priceSpiderRebind() : null
+    this.props.location.pathname !== prevProps.location.pathname && this.props.step !== 1 ? this.updateScrollPosition() : null
+    if (this.props.step !== prevProps.step && this.props.location.pathname === prevProps.location.pathname){
+      this.updateScrollPosition()
+    }
     stepFromPathname !== this.props.step && stepFromPathname <= this.state.totalSteps && stepFromPathname >= 1 ? (
       this.props.setStep(stepFromPathname, this.state.totalSteps)
         .then(this.setState({advance:false}))
@@ -86,6 +89,7 @@ class HomeComponent extends Component {
 
   updateScrollPosition = () => {
     const stepFromPathname = getStepFromPathname(this.props.location.pathname)
+    if(stepFromPathname === 1) return
     const element = stepFromPathname === 1 ? ".tntool__banner--finder" : ".tntool__banner--results, .tntool__banner--question"
     scrollTo(element, 1000)
   }
