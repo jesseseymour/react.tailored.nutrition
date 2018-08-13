@@ -7,7 +7,13 @@ class App extends Component {
     super(props)
   }
   render() {
-    var rootData = JSON.parse(document.getElementById('react-container').dataset.root);
+    var rootData = JSON.parse(document.getElementById('react-container').dataset.root); //take root data from page source and pass to application
+
+
+    
+    /**
+     * Initialize the React Router and nest the Home Container
+     */
     return(
       <Router key={Math.random()}>
         <Home 
@@ -15,6 +21,10 @@ class App extends Component {
           petType={rootData.petType} />
       </Router>
     )
+
+
+
+
   }
 }
 

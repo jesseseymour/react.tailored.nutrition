@@ -1,6 +1,11 @@
 import types from './types'
 
-const updatePetName = (payload,petType) => ({
+
+/**
+ * Action creators are dispatched to the reducer which then updates the Redux state 
+ */
+
+const updatePetName = (payload, petType) => ({
   type: types.UPDATE_PETNAME,
   petType,
   payload

@@ -4,12 +4,20 @@ import { appOperations } from '../duck'
 import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = (state, ownProps) => {
+  /**
+   * Pull items from Redux store and attach as props.
+   * We are sure to pull only the data from the 
+   * store that matches the petType (dog or cat)
+   */
   const petType = ownProps.petType
   const { petName, step, selections, completedStep } = state.app[petType]
   return { petName, step, selections, completedStep }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+  /**
+   * Pass Redux dispatchers as props
+   */
   const petType = ownProps.petType
   return {
     updatePetName(name) {
@@ -27,13 +35,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(
         appOperations.nextStep(petType)
       )
-      //return Promise.resolve()
     }, 
     prevStep() {
       dispatch(
         appOperations.prevStep(petType)
       )
-      //return Promise.resolve()
     },
     updateSelection(questionId,questionStep,optionId) {
       dispatch(

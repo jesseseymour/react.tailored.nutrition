@@ -22,6 +22,8 @@ import {
 class HomeComponent extends Component {
   constructor(props) {
     super(props)
+
+    //set initial state
     this.state = {
       loading: true,
       questions: null,
@@ -32,17 +34,26 @@ class HomeComponent extends Component {
   }
 
   componentDidMount = () => {
+
+    //fetch questions for specific petType (dog or cat)
     fetchWithTimeout(10000,
     fetch(`/api/survey/index?survey=${this.props.petType}`, {
       headers: {
         'content-type': 'text/xml'
       }
     }))
-    //fetch('./data/questions.json'))
     .then(handleErrors)
     .then(results => results.json())
-    .then(questions => this.setState({questions, totalSteps: this.state.totalSteps + questions.length, loading: false}))
-    .then(() => this.checkPath())
+    .then(questions => {
+      this.setState(
+        {
+          questions, //log questions to state
+          totalSteps: this.state.totalSteps + questions.length, //add number of questions to totalSteps from the initial state
+          loading: false
+        }
+      )
+    })
+    .then(() => this.checkPath()) //check for a valid url pathname
     .catch(function(error){
       console.log(error)
     })
@@ -50,11 +61,15 @@ class HomeComponent extends Component {
 
   componentDidUpdate = (prevProps) => {
     const stepFromPathname = getStepFromPathname(this.props.location.pathname)
-    this.props.location.pathname.includes('results') && this.props.location.pathname !== prevProps.location.pathname ? priceSpiderRebind() : null
+    //this.props.location.pathname.includes('results') && this.props.location.pathname !== prevProps.location.pathname ? priceSpiderRebind() : null
+
+    //only update the scroll position on step change
     this.props.location.pathname !== prevProps.location.pathname && this.props.step !== 1 ? this.updateScrollPosition() : null
     if (this.props.step !== prevProps.step && this.props.location.pathname === prevProps.location.pathname){
       this.updateScrollPosition()
     }
+
+    //set redux step and prevent app from being able to advance
     stepFromPathname !== this.props.step && stepFromPathname <= this.state.totalSteps && stepFromPathname >= 1 ? (
       this.props.setStep(stepFromPathname, this.state.totalSteps)
         .then(this.setState({advance:false}))
@@ -62,11 +77,11 @@ class HomeComponent extends Component {
   }
 
   checkPath = () => {
-    const stepFromPathname = getStepFromPathname(this.props.location.pathname)
+    const stepFromPathname = getStepFromPathname(this.props.location.pathname) //gets the step number from the pathname
     const {completedStep} = this.props
     const {totalSteps} = this.state
 
-    //if stepFromPathname is ahead of last completed step, NaN or below 1, redirect to last completed step
+    //if stepFromPathname is either ahead of last completed step, NaN or below 1, redirect to last completed step
     if (
       stepFromPathname > completedStep || 
       !Number.isInteger(stepFromPathname) || 
@@ -78,6 +93,10 @@ class HomeComponent extends Component {
     return
   }
 
+
+  /**
+   * nextStep and prevStep update pathname to next or previous step
+   */
   nextStep = (e) => {
     e.preventDefault()
     this.props.step === this.state.totalSteps ? this.props.history.push(`/${this.props.baseUrl}/results`) : this.props.history.push(`/${this.props.baseUrl}/step/${this.props.step + 1}`)
@@ -88,6 +107,8 @@ class HomeComponent extends Component {
     this.props.location.pathname.split('/').indexOf('results') > -1 ? this.props.history.push(`/${this.props.baseUrl}/step/${this.props.step}`) : this.props.history.push(`/${this.props.baseUrl}/step/${this.props.step - 1}`)
   } 
 
+
+  
   updateScrollPosition = () => {
     const stepFromPathname = getStepFromPathname(this.props.location.pathname)
     if(stepFromPathname === 1) return
@@ -95,17 +116,28 @@ class HomeComponent extends Component {
     scrollTo(element, 1000)
   }
 
-  updatePetDetails = (name, type="") => {
-    this.setAdvanceState()
-    this.props.updatePetDetails({ name, type })
-  }
+  // updatePetDetails = (name, type="") => {
+  //   this.setAdvanceState()
+  //   this.props.updatePetDetails({ name, type })
+  // }
 
+
+  //update pet name when input field is changed and allow app to advance
   updatePetName = name => {
     this.setAdvanceState()
     this.props.updatePetName(name)
   }
 
-  updateAnswer = (params, updateFn = this.props.updateSelection) => {
+
+  /**
+   * Answers are sent as arrays.
+   * If a user selects an exclusive option, an array is sent with only that option.
+   * If a user selects a non-exclusive option, the arrays is updated if answer
+   * exists. Otherwise, the answer is added the array.
+   * 
+   * When the answer is submitted, state is updated to allow the app to advance
+   */
+  updateAnswer = params => {
     const {questionId, questionStep, optionId, isExclusive, exclusiveOptions} = params
     let options = [optionId]
     if(!isExclusive){
@@ -124,10 +156,17 @@ class HomeComponent extends Component {
         options = currentOptions
       }
     }
-    updateFn(questionId, questionStep, options)
+    this.props.updateSelection(questionId, questionStep, options)
       .then(() => this.isAppReadyToAdvance() ? this.setAdvanceState() : this.setAdvanceState(false))
   }
 
+
+
+  /**
+   * If on step 1, check for a pet name.
+   * If on any step after 1, check to see if question has been answered.
+   * If yes, return true
+   */
   isAppReadyToAdvance = () => {
     let advance = false
     if (this.props.step === 1){
@@ -139,15 +178,31 @@ class HomeComponent extends Component {
     return advance
   }
 
+
+
+  /**
+   * set advance flag in state to true
+   */
   setAdvanceState = (advance = true) => {
     this.setState({advance: advance})
   }
 
+
+  /**
+   * Set pathname and wait for that to complete.
+   * When complete, fetch results
+   */
   submitAnswers = () => {
     Promise.resolve(this.props.history.push(`/${this.props.baseUrl}/results`))
       .then(this.fetchResults())
   }
 
+
+
+  /**
+   * send answers to web service, which will then send back recommended products.
+   * once recos come back, set completedStep and update price spider and bv stars.
+   */
   fetchResults = () => {
     const optionsStr = `[${this.props.selections.map(option => `[${option.optionId.map(id => `"${id}"`)}]`)}]`
     fetch(`/api/survey/recommendation?options=${optionsStr}`, {
@@ -173,6 +228,10 @@ class HomeComponent extends Component {
       })
   }
 
+
+  /**
+   * helper function to get list of answers to completed questions
+   */
   getAnsweredQuestions = () => {
     const { selections } = this.props
     const { questions } = this.state

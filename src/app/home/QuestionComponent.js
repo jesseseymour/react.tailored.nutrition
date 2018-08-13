@@ -23,15 +23,23 @@ class Question extends Component {
     const question = this.props.questions ? this.props.questions.find(question => question.step === questionStep) : null
     const { selections, updateAnswer, petName } = this.props
 
+
+    /**
+     * Create new array using array.filter.
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+     * If questionId === question.id and if selection option id is found in list of options, push to array.
+     * If array length is greater than 0, return true
+     */
     function isAnswerActive(option){
-      for (let i = 0; i < selections.length; i++){
-        if (selections[i].questionId === question.id && selections[i].optionId.indexOf(option.id) > -1) {
-          return true
-        }
-      }
-      return false
+      return selections.filter(selection => selection.questionId === question.id && selection.optionId.indexOf(option.id) > -1).length > 0
     }
 
+
+    /**
+     * array.map options and render.
+     * Use isAnswerActive function to determine whether or not answer is active.
+     * onClick, use updateAnswer function passed through props from HomeComponent
+     */
     return question ? (
       <div>
         <div className='tntool__banner tntool__banner--question' dangerouslySetInnerHTML={{ __html: question.question.replace('${petname}', petName ? petName : 'your pet')}}></div>
