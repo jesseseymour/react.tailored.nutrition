@@ -13,7 +13,7 @@ module.exports = merge(common, {
 		hotOnly: true,
 		proxy: [{
 			context: ["/api", "/Content", "/Sitefinity", "/images"],
-			target: "http://localhost:51879",
+			target: "https://iams-develop.catapultstaging.com",
 			secure: false,
 			changeOrigin: true
 		}]
