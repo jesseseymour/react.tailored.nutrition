@@ -20,7 +20,7 @@ const Results = ({styles, results, petType = "dog", petName, resetApp}) => {
 
   return (
     <div style={styles}>
-      <div className="tntool__banner tntool__banner--results">{petName} is one lucky {petType}!<span>See {petName}'s tailored recipe below</span></div>
+      <div className="tntool__banner tntool__banner--results">{petName} is one special {petType}!<span>See {petName}'s tailored recipe below.</span></div>
       {
         results ? 
         <div className="tntool__results">

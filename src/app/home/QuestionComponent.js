@@ -34,7 +34,7 @@ class Question extends Component {
 
     return question ? (
       <div>
-        <div className='tntool__banner tntool__banner--question'>{question.question.replace('${petname}', petName ? petName : 'your pet')}&nbsp;</div>
+        <div className='tntool__banner tntool__banner--question' dangerouslySetInnerHTML={{ __html: question.question.replace('${petname}', petName ? petName : 'your pet')}}></div>
         <div className='tntool__options'>
           {question.options.map((option,index) => {
             return (
