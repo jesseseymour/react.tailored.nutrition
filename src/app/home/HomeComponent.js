@@ -15,6 +15,7 @@ import {
   hasQuestionBeenAnswered,
   resetApp,
   priceSpiderRebind,
+  updateInlineRatings,
   scrollTo
 } from '../utils'
 
@@ -156,8 +157,20 @@ class HomeComponent extends Component {
     })
       .then(this.handleErrors)
       .then(results => results.json())
-      .then(results => this.setState({results}))
-      .then(() => this.props.setStep(this.state.totalSteps, this.state.totalSteps, true))
+      .then(results => {
+        this.setState({results})
+        return results
+      })
+      .then(results => {
+        this.props.setStep(this.state.totalSteps, this.state.totalSteps, true)
+        return results
+      })
+      .then(results => {
+        let bvArr = [results.product.bvID]
+        results.ymal.map( product => product.bvID.length && bvArr.indexOf(product.bvID) === -1 ? bvArr.push(product.bvID) : null)
+        priceSpiderRebind()
+        updateInlineRatings(bvArr)
+      })
   }
 
   getAnsweredQuestions = () => {
