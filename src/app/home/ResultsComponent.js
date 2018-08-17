@@ -25,7 +25,7 @@ const Results = ({styles, results, petType = "dog", petName, resetApp}) => {
         results ? 
         <div className="tntool__results">
           {getProduct( product )}
-          <div className="tntool__resultscopy">{product.copy}</div>
+          <div className="tntool__resultscopy" dangerouslySetInnerHTML={{__html:product.copy}} ></div>
           <div className={`tntool__bowl tntool__bowl--product tntool__bowl--${petType === 'dog' ? 'green' : 'orange'}`}>
             <svg width="50" height="30" preserveAspectRatio="xMidYMax meet"><use xlinkHref={`#${petType}-food-bowl`}></use></svg>
           </div>
