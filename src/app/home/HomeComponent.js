@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import fetch from 'isomorphic-fetch'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import StepSelector from './StepSelectorComponent'
 import PetDetails from './PetDetailsComponent'
@@ -113,7 +113,7 @@ class HomeComponent extends Component {
     const stepFromPathname = getStepFromPathname(this.props.location.pathname)
     if(stepFromPathname === 1) return
     const element = stepFromPathname === 1 ? ".tntool__banner--finder" : ".tntool__banner--results, .tntool__banner--question"
-    scrollTo(element, 1000)
+    scrollTo(element, 400)
   }
 
   // updatePetDetails = (name, type="") => {
@@ -254,7 +254,7 @@ class HomeComponent extends Component {
    * call resetApp helper function and scroll to top of page
    */
   resetApp = () => {
-    scrollTo(".tntool__banner--finder", 1000)
+    scrollTo(".tntool__banner--finder", 400)
     resetApp(this.props.history, this.props.reset(), `/${this.props.baseUrl}/step/1`)
   }
   
