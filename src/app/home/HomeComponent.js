@@ -249,6 +249,14 @@ class HomeComponent extends Component {
     }
     return answerArr
   }
+
+  /**
+   * call resetApp helper function and scroll to top of page
+   */
+  resetApp = () => {
+    scrollTo(".tntool__banner--finder", 1000)
+    resetApp(this.props.history, this.props.reset(), `/${this.props.baseUrl}/step/1`)
+  }
   
   render() {
     const { step } = this.props
@@ -317,7 +325,8 @@ class HomeComponent extends Component {
                         results={this.state.results}
                         petName={this.props.petName}
                         petType={this.props.petType}
-                        resetApp={() => resetApp(this.props.history, this.props.reset(), `/${this.props.baseUrl}/step/1`)}
+                        resetApp={this.resetApp}
+                        //resetApp={() => resetApp(this.props.history, this.props.reset(), `/${this.props.baseUrl}/step/1`)}
                         />
                   }
                 />
