@@ -336,7 +336,7 @@ class HomeComponent extends Component {
         </div>
         <StepSelector 
           next={step < totalSteps}
-          prev={step > 1}
+          prev={step > 1 && !this.props.location.pathname.includes('results')}
           results={step === totalSteps && this.props.location.pathname.split('/').indexOf('step') > -1}
           isReadyToAdvance={this.isAppReadyToAdvance() ? true : this.state.advance}
           nextStep={(e) => this.nextStep(e)}
