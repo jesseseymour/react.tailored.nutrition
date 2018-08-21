@@ -38,7 +38,7 @@ const Results = ({styles, results, petType = "dog", petName, resetApp}) => {
                 Not what you expected?<span>Try these tailored recipes.</span>
               </div>
               {
-                ymal.map( (product) => getProduct(product) )
+                ymal.map( (product, index) => index < 2 ? getProduct(product) : null )
               }
               <a className="tntool__viewall" href={`/${petType}-food`}>view all {petType} products</a>
             </div> :
