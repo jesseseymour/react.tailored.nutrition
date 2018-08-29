@@ -35,7 +35,7 @@ const Results = ({styles, results, petType = "dog", petName, resetApp}) => {
             results.ymal ? 
             <div className="tntool__ymal">
               <div className="tntool__ymal--notice">
-                Not what you expected?<span>Try these tailored recipes.</span>
+                Not what you expected?<br/><span>Check out these other recipes based on your answers.</span>
               </div>
               {
                 ymal.map( (product, index) => index < 2 ? getProduct(product) : null )
