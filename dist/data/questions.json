@@ -1,0 +1,145 @@
+[{
+  "id": "378b4be9-6b1f-6394-958c-ff0a0067515e",
+  "step": 2,
+  "Text": "Age",
+  "question": "How old is ${petname}?",
+  "options": [{
+      "id": "ec8c4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-puppy",
+      "option": "Puppy (0-2 years)",
+      "DisplayOrder": 1,
+      "isExclusive": true
+    },
+    {
+      "id": "028d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-adult",
+      "option": "Adult (2-7 years)",
+      "DisplayOrder": 2,
+      "isExclusive": true
+    },
+    {
+      "id": "188d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-senior",
+      "option": "Senior (7+ years)",
+      "DisplayOrder": 3,
+      "isExclusive": true
+    }
+  ]
+}, {
+  "id": "4c8b4be9-6b1f-6394-958c-ff0a0067515e",
+  "step": 3,
+  "Text": "Weight",
+  "question": "How much ​will ${petname} weight when she is full grown?",
+  "options": [{
+      "id": "a88c4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-small",
+      "option": "Small (0-20 lbs)",
+      "DisplayOrder": 1,
+      "isExclusive": true
+    },
+    {
+      "id": "be8c4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-medium",
+      "option": "Medium (20-50 lbs)",
+      "DisplayOrder": 2,
+      "isExclusive": true
+    },
+    {
+      "id": "d48c4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-large",
+      "option": "Large (50+ lbs)",
+      "DisplayOrder": 3,
+      "isExclusive": true
+    }
+  ]
+}, {
+  "id": "6f8b4be9-6b1f-6394-958c-ff0a0067515e",
+  "step": 4,
+  "Text": "Special Needs",
+  "question": "Does ​${petname} have special ​dietary needs?",
+  "multipleChoice": true,
+  "options": [{
+      "id": "7a8c4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-weight",
+      "option": "Weight",
+      "DisplayOrder": 1,
+      "isExclusive": false
+    },
+    {
+      "id": "908c4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-digestion",
+      "option": "Digestion",
+      "DisplayOrder": 2,
+      "isExclusive": false
+    },
+    {
+      "id": "04464ce9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-grain-free",
+      "option": "Grain Free",
+      "DisplayOrder": 3,
+      "isExclusive": false
+    },
+    {
+      "id": "5ba84be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-special-needs-none",
+      "option": "None",
+      "DisplayOrder": 4,
+      "isExclusive": true
+    }
+  ]
+}, {
+  "id": "848b4be9-6b1f-6394-958c-ff0a0067515e",
+  "step": 5,
+  "Text": "Breed",
+  "question": "​Is ${petname} a specific breed?",
+  "options": [{
+      "id": "308d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-chihuahua",
+      "option": "Chihuahua",
+      "DisplayOrder": 1,
+      "isExclusive": true
+    },
+    {
+      "id": "468d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-dachshund",
+      "option": "Dachshund",
+      "DisplayOrder": 2,
+      "isExclusive": true
+    },
+    {
+      "id": "5c8d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-yorkshire-terrier",
+      "option": "Yorkshire Terrier",
+      "DisplayOrder": 3,
+      "isExclusive": true
+    },
+    {
+      "id": "728d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-bulldog",
+      "option": "Bulldog",
+      "DisplayOrder": 4,
+      "isExclusive": true
+    },
+    {
+      "id": "888d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-labrador-retriever",
+      "option": "Labrador Retriever",
+      "DisplayOrder": 5,
+      "isExclusive": true
+    },
+    {
+      "id": "9e8d4be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-german-shepherd",
+      "option": "German Shepherd",
+      "DisplayOrder": 6,
+      "isExclusive": true
+    },
+    {
+      "id": "43a84be9-6b1f-6394-958c-ff0a0067515e",
+      "image": "dog-breed-other",
+      "option": "Other",
+      "DisplayOrder": 7,
+      "isExclusive": true
+    }
+  ]
+}]
